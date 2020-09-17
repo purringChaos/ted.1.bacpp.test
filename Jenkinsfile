@@ -1,6 +1,6 @@
 #!groovy
 
-node('slave1') {
+node('master') {
 
 		stage("Cleanup Workspace"){ deleteDir() }
 
@@ -11,3 +11,4 @@ node('slave1') {
 
     sh "ant -file build/build.xml continuous_build"
     }
+  }
