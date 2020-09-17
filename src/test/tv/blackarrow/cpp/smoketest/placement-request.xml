@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlacementRequest messageId="123" identity="dev-http-linear"
+	version="1.1" xmlns="http://www.scte.org/schemas/130-3/2008a/adm"
+	xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.scte.org/schemas/130-3/2008a/adm C:\Users\lcarter\Documents\blackarrow\scte\SCTE_130-3_2010.xsd">
+	<Entertainment>
+		<core:Content>
+			<core:AssetRef assetID="NW08" providerID="blackarrow.tv" />
+		</core:Content>
+	</Entertainment>
+	<Client>
+		<core:CurrentDateTime>2013-11-11T18:00:00.000Z</core:CurrentDateTime>
+		<TargetCode key="AdZone">093</TargetCode>
+		<TargetCode key="SignalId">adbc</TargetCode>
+	</Client>
+	<PlacementOpportunity serviceRegistrationRef="FOO"
+		id="c0976a5f-ecv0d5-11e1-8a7c-6f04bd12a369">
+		<OpportunityConstraints>
+			<EffectiveStartDateTime>2013-11-11T18:00:00.123Z
+			</EffectiveStartDateTime>
+			<EffectiveEndDateTime>2012-11-11T18:30:00.123Z</EffectiveEndDateTime>
+		</OpportunityConstraints>
+	</PlacementOpportunity>
+</PlacementRequest>

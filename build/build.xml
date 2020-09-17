@@ -1,0 +1,550 @@
+<?xml version="1.0"?>
+
+<project name="Blackarrow Converged Platform POIS" basedir=".." default="default">
+	<echo message="Building application for Blackarrow Converged Platform POIS" />
+
+	<echo message="Loading build properties from build/build.properties and etc/hosts/localhost.properties" />
+	<property name="ant.build.javac.source" value="1.8" />
+	<property name="ant.build.javac.target" value="1.8" />
+	<property file="${basedir}/build/build.properties" />
+	<property file="etc/hosts/${host}.properties"/>
+
+	<!-- default mule server home (standalone-3.2.1) /opt/mule-standalone-3.2.1 -->
+	<property name="DEFAULT_MULE_HOME" value="${dir.mule.home}" />
+	
+	<!-- default CXF home (use WSDL2Java tool) /opt/apache-cxf-2.6.0 -->
+	<property name="DEFAULT_CXF_HOME" value="${dir.cxf.home}" />
+
+	<!-- demo war deploy apache-tomcat-6.0.32 -->
+	<property name="DEFAULT_WEB_DEPLOY_HOME" value="${war.dir.deploy}/" />
+		
+	<!-- Default Log4j conf directory -->
+	<property name="DEFAULT_POIS_LOG4J_CONF" value="${pois.log4j.conf}/" />
+	
+	<!-- XJC Executable -->
+	<property name="XJC_EXECUTABLE" value="${xjc.executable}" />
+	
+	<property environment="env" />
+	
+	<condition property="MULE_HOME" value="${env.MULE_HOME}" else="${DEFAULT_MULE_HOME}">
+		<and>
+			<isset property="env.MULE_HOME" />
+		</and>
+	</condition>
+	<condition property="CXF_HOME" value="${env.CXF_HOME}" else="${DEFAULT_CXF_HOME}">
+		<and>
+			<isset property="env.CXF_HOME" />
+		</and>
+	</condition>
+	<condition property="WEB_DEPLOY_HOME" value="${env.WEB_HOME}/webapps" else="${DEFAULT_WEB_DEPLOY_HOME}">
+		<and>
+			<isset property="env.WEB_HOME" />
+		</and>
+	</condition>
+
+	<property name="project.name" 		value="bacpp" />
+	<property name="project.title" 		value="Blackarrow Converged Platform POIS" />
+	
+	<property name="dir.home" 			value="${basedir}" />
+	<property name="dir.src" 			value="${dir.home}/src" />
+	<property name="dir.lib" 			value="${dir.home}/lib" />
+	<property name="dir.bin" 			value="${dir.home}/bin" />
+	<property name="dir.etc" 			value="${dir.home}/etc" />
+	<property name="dir.resources" 		value="${dir.home}/resources" />
+	<property name="dir.javadoc" 		value="${dir.home}/javadoc" />
+	<property name="dir.build" 			value="${dir.home}/build" />
+	<property name="dir.staging" 		value="${dir.build}/staging" />
+	<property name="dir.artifacts" 		value="${dir.staging}/artifacts" />
+
+	<property name="dir.web" 			value="${dir.home}/web" />
+	<property name="dir.web.app" 		value="${dir.web}/app" />
+	<property name="dir.web.images" 	value="${dir.web}/images" />
+	<property name="dir.web.scripts" 	value="${dir.web}/scripts" />
+	<property name="dir.web.styles" 	value="${dir.web}/styles" />
+	<property name="dir.web.resources" 	value="${dir.web}/resources" />
+	<property name="dir.web.lib" 		value="${dir.web}/lib" />
+
+	<property name="file.app.jar" 		value="${dir.artifacts}/${project.name}.jar" />
+	<property name="file.test.jar" 		value="${dir.artifacts}/${project.name}.test.jar" />
+	<property name="file.app.war" 		value="${dir.artifacts}/${project.name}.war" />
+	<property name="file.api.war" 		value="${dir.artifacts}/${project.name}.api.war" />
+	<property name="file.mule.zip" 		value="${dir.artifacts}/${project.name}.zip" />
+
+	<property name="dir.temp" 			value="${dir.home}/temp" />
+	<property name="dir.temp.bin" 		value="${dir.temp}/bin" />
+	<property name="dir.temp.mule" 		value="${dir.temp}/mule" />
+	<property name="dir.temp.war" 		value="${dir.temp}/war" />
+	<property name="dir.web-inf" 		value="${dir.temp}/web-inf" />
+	<property name="dir.web-inf.lib" 	value="${dir.web-inf}/lib" />
+	<property name="web.xml" 			value="${dir.web-inf}/web.xml" />
+
+	<property name="dir.mule.lib" value="${MULE_HOME}/lib/mule/"/>
+
+	<property name="dir.gen-src" value="gen-src"/>
+	<!--
+	<property name="file.cpp_signal_schema" value="resources/schema/MD-SP-SIGNALING-I02.xsd"/>
+	-->
+	<property name="file.esam_signal_schema" value="resources/schema/OC-SP-ESAM-API-I01-Signal.xsd"/>
+	<property name="file.esam_manifest_schema" value="resources/schema/OC-SP-ESAM-API-I01-Manifest.xsd"/>
+	<property name="file.esam_signaling_schema" value="resources/schema/MD-SP-SIGNALING-EC0089.xsd"/>
+	<property name="file.alternate_program_schema" value="resources/schema/alternate_programs.xsd"/>
+	
+	<!--  ESAM I03 support -->
+	<property name="file.esam_manifest_schema.i03" value="resources/schema/ESAM-API-I03/OC-SP-ESAM-API-I03-Manifest.xsd"/>
+	<property name="file.esam_signal_schema.i03" value="resources/schema/ESAM-API-I03/OC-SP-ESAM-API-I03-Signal.xsd"/>
+	<property name="file.esam_signaling_schema.i03" value="resources/schema/ESAM-API-I03/MD-SP-SIGNALING-I02.xsd"/>
+	
+	<!--  ESAM I03 support for TWC/Envivio -->
+    <property name="file.esam_manifest_schema.i03.envivio" value="resources/schema/ESAM-API-I03/OC-SP-ESAM-API-I03-Manifest-Envivio.xsd"/>
+
+	<!--  MCC Response Template -->
+	<property name="file.mcc_response_template" value="resources/schema/template/mcc_response_template.xsd"/>
+	
+	<property name="test.output.dir" value="${dir.artifacts}/testresults" />
+	<property name="test.coverage.dir" value="${dir.artifacts}/coverage" />
+
+	<path id="test-classpath">
+		<fileset dir="${dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Emma specific properties are set here -->
+	<property name="emma.enabled" value="false" />
+	<property name="emma.filter" value="" />
+	<property name="emma.instrumentation.dir" value="${dir.staging}/instrumentation" />
+
+	<path id="anttasks.path">
+        <fileset dir="${dir.mule.lib}" includes="mule-tools-anttasks-*.jar"/>
+    </path>
+    <taskdef resource="org/mule/mulePackagingTasks.properties" classpathref="anttasks.path"/>
+	<taskdef resource="emma_ant.properties" classpathref="test-classpath" />
+	
+
+	<target name="default" depends="continuous_build" />
+	<target name="continuous_build" depends="package" />
+
+	
+	<!--
+	*************************************************************************
+	* Class path elements
+	*************************************************************************
+    -->
+	<path id="bacpp.classpath">
+		<fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dir.lib}/test-lib">
+			<include name="*.jar" />
+            </fileset>
+        <fileset dir="${dir.lib}/couchbase-client-sdk">
+			<exclude name="*javadoc*" />
+			<exclude name="*sources*" />
+        	<exclude name="*.txt" />
+            </fileset>
+        <fileset dir="${dir.lib}/mule-server">
+                <include name="**/*.jar"/>
+            </fileset>
+	</path>
+
+    <!-- Configure CXF classpath - to be used by WSDL2java ant task -->
+    <path id="cxf.classpath">
+        <fileset dir="${CXF_HOME}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${CXF_HOME}/lib/endorsed">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+	
+	<!--
+	*************************************************************************
+	* Clean up the project. Delete folders created by ant script
+	*************************************************************************
+    -->
+	<target name="clean">
+		<echo message="Deleting ${dir.staging}" />
+		<delete dir="${dir.staging}" />
+
+		<echo message="Deleting ${dir.temp}" />
+		<delete dir="${dir.temp}" />
+
+		<echo message="Deleting ${dir.javadoc}" />
+		<delete dir="${dir.javadoc}" />
+		
+		<echo message="Deleting ${dir.gen-src}" />
+		<delete dir="${dir.gen-src}" />
+		
+		<echo message="Deleting ${dir.build}/classes" />
+		<delete dir="${dir.build}/classes" />
+		
+	</target>
+
+	
+	<target name="xjc">
+		<delete dir="${dir.gen-src}" quiet="true"/>
+		<mkdir dir="${dir.gen-src}"/>
+		<exec executable="${XJC_EXECUTABLE}">
+			<arg value="-extension"/>
+			<arg value="-d"/>
+			<arg value="${dir.gen-src}"/>
+			<arg value="-p"/>
+			<arg value="tv.blackarrow.cpp.signal.signaling"/>
+			<arg value="${file.esam_signaling_schema}"/>
+			<arg value="-npa" />
+			<arg value="-episode" />
+		    <arg value="metadata30.episode" />  
+		</exec>
+		
+		<exec executable="${XJC_EXECUTABLE}">
+			<arg value="-extension"/>
+			<arg value="-b"/>
+			<arg value="metadata30.episode"/>
+			<arg value="-d"/>
+			<arg value="${dir.gen-src}"/>
+			<arg value="-p"/>
+			<arg value="tv.blackarrow.cpp.signaling"/>
+			<arg value="${file.esam_signal_schema}"/>
+			<arg value="-npa" />
+		</exec>
+	</target>
+
+	<target name="xjc_manifest">
+		<exec executable="${XJC_EXECUTABLE}">
+			<arg value="-extension"/>
+			<arg value="-b"/>
+			<arg value="metadata30.episode"/>
+			<arg value="-d"/>
+			<arg value="${dir.gen-src}"/>
+			<arg value="-p"/>
+			<arg value="tv.blackarrow.cpp.manifest"/>
+			<arg value="${file.esam_manifest_schema}"/>
+			<arg value="-npa" />
+		</exec>
+	</target>
+
+	
+	<target name="xjc_alternate_program">
+		<exec executable="${XJC_EXECUTABLE}">
+			<arg value="-extension"/>
+			<arg value="-d"/>
+			<arg value="${dir.gen-src}"/>
+			<arg value="-p"/>
+			<arg value="tv.blackarrow.cpp.blackout"/>
+			<arg value="${file.alternate_program_schema}"/>
+		</exec>
+	</target>
+	
+	<target name="xjc_esam_i03">
+			<exec executable="${XJC_EXECUTABLE}">
+				<arg value="-extension"/>
+				<arg value="-d"/>
+				<arg value="${dir.gen-src}"/>
+				<arg value="-p"/>
+				<arg value="tv.blackarrow.cpp.i03.signaling"/>
+				<arg value="${file.esam_signal_schema.i03}"/>
+				<arg value="-npa" />
+			</exec>
+			
+			<exec executable="${XJC_EXECUTABLE}">
+				<arg value="-extension"/>
+				<arg value="-d"/>
+				<arg value="${dir.gen-src}"/>
+				<arg value="-p"/>
+				<arg value="tv.blackarrow.cpp.i03.manifest"/>
+				<arg value="${file.esam_manifest_schema.i03}"/>
+				<arg value="-npa" />
+			</exec>
+		
+			<exec executable="${XJC_EXECUTABLE}">
+				<arg value="-extension"/>
+				<arg value="-d"/>
+				<arg value="${dir.gen-src}"/>
+				<arg value="-p"/>
+				<arg value="tv.blackarrow.cpp.i03.manifest.envivio"/>
+				<arg value="${file.esam_manifest_schema.i03.envivio}"/>
+				<arg value="-npa" />
+			</exec>
+		    		
+		</target>
+	
+	<!-- Target for MCC Template XJC-->
+		<target name="xjc_mcc_template">
+					<exec executable="xjc">
+						<arg value="-extension"/>
+						<arg value="-d"/>
+						<arg value="${dir.gen-src}"/>
+						<arg value="-p"/>
+						<arg value="tv.blackarrow.cpp.model.mccresponse"/>
+						<arg value="${file.mcc_response_template}"/>
+						<arg value="-npa" />
+					</exec>
+		</target>	
+	
+	<target name="wsdl2java" >
+	      <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
+            <arg value="-d"/>
+            <arg value="${dir.gen-src}"/>
+            <arg value="-fe"/>
+            <arg value="jaxws21"/>
+            <arg value="-verbose"/>
+        	<arg value="-p"/>
+            <arg value="tv.blackarrow.cpp.webservice.scte130_5_2010"/>
+            <arg value="${dir.home}/resources/schema/scte_130-5_2010/SCTE_130-5_2010.wsdl"/>
+            <classpath>
+                <path refid="cxf.classpath"/>
+            </classpath>
+         </java>
+	</target>
+	
+	<!--
+	*************************************************************************
+	* Compile source code
+	*************************************************************************
+    -->
+	<target name="compile">
+		<mkdir dir="${dir.build}/classes" />
+		<echo message="Class Path: ${bacpp.classpath}" />
+		<javac srcdir="${dir.gen-src}" destdir="${dir.build}/classes" debug="true" includeAntRuntime="false">
+               <classpath refid="bacpp.classpath"/>
+
+	       <compilerarg value="-Djava.endorsed.dirs=${dir.lib}"/>
+        </javac>
+
+		<javac destdir="${dir.build}/classes" source="1.8" target="1.8" debug="true" deprecation="false" optimize="false" failonerror="true">
+			<src path="${dir.src}" />
+			<classpath refid="bacpp.classpath" />
+			<compilerarg value="-Djava.endorsed.dirs=${dir.lib}"/>
+		</javac>
+
+		<copy file="etc/templates/cpp_bean.xml.template" tofile="${dir.resources}/conf/cpp_bean.xml" overwrite="true">
+    		<filterset>
+    			<filter token="INBOX_DIR" value="${ccms.inbox.dir}"/>
+    			<filter token="BACKUP_TO" value="${ccms.backup.to}"/>
+    			<filter token="CPP_HOST_INGEST_URL" value="${cpp.host.ingest.url}"/>
+    			<filter token="CPP_HOST_AP_EVENT_URL" value="${cpp.host.ap.event.url}"/>
+    			<filter token="CPA_HOST_INGEST_URL" value="${cpa.host.ingest.url}"/>
+    			<filter token="CPA_HOST_NOTIFICATION_URL" value="${cpa.host.notification.url}"/>
+    		</filterset>
+    	</copy>
+
+		<copy todir="${dir.build}/classes">
+			<fileset dir="${dir.resources}" >
+				<exclude name="conf/log4j2.xml" />
+			</fileset>
+		</copy>
+		
+	</target>
+	<target name="get-java-version">
+		<echo message="Java version used by Ant is: ${ant.java.version}" />
+		<condition property="java.version.at.runtime">
+			<equals arg1="${ant.java.version}" arg2="1.8" />
+		</condition>
+		<echo message="Java version used by Ant is: ${java.version}" />
+	</target>
+
+	<target name="check-java-version" depends="get-java-version" unless="java.version.at.runtime">
+		<fail message="Unsupported Java version: ${ant.java.version}. Make sure that the Java version is 1.8." />
+	</target>
+	<!--
+	*************************************************************************
+	* Create binaries for deployment
+	*************************************************************************
+    -->
+	<target name="package" depends="check-java-version,clean,xjc,xjc_manifest,xjc_alternate_program,xjc_esam_i03,xjc_mcc_template,wsdl2java,compile">
+		<mkdir dir="${dir.artifacts}" />
+		<!--Copying log4j2.12.1 to updated in mule_server/lib/boot directory. The below code will copy it to artifacts directory for easy access. -->
+		<mkdir dir="${dir.artifacts}/log4j2" />
+		<copy todir="${dir.artifacts}/log4j2">
+			<fileset dir="${dir.lib}/mule-server/boot">
+				<include name="*2.12.1*" />
+				<include name="disruptor*" />
+			</fileset>
+		</copy>
+		<mkdir dir="${dir.artifacts}/conf" />
+		<!-- this is needed for release engineering team to copy this file to conf directory during release -->
+		<copy toDir="${dir.artifacts}/conf" file="${dir.resources}/conf/log4j2.xml" />
+		<copy toDir="${dir.artifacts}/conf" file="${dir.resources}/conf/mcc_response_template.xml" />
+		<copy toDir="${dir.artifacts}/conf" file="${dir.resources}/conf/cpp_bean.xml" />
+		<!-- the values in pretrigger_bean.xml should be modified based on the requirements  -->
+		<copy toDir="${dir.artifacts}" file="${dir.resources}/conf/pretrigger_bean.xml" />
+
+		<jar destfile="${file.app.jar}" update="true" basedir="${dir.build}/classes" excludes="test/**" />
+
+		<jar destfile="${file.test.jar}" update="true" basedir="${dir.build}/classes" />
+
+		<mkdir dir="${dir.temp.mule}/classes"/>
+		<copy todir="${dir.temp.mule}/classes">
+			<fileset dir="${dir.build}/classes" excludes="test/**" />
+		</copy>
+		
+		<!-- all mule configuration: bean definitions, flow definitions, etc. -->
+		<copy tofile="${dir.temp.mule}/mule-config.xml" file="${dir.src}/main/app/bacpp-config.xml" />
+		
+		<mulePackage applicationFile="${file.mule.zip}">
+            <config dir="${dir.src}/main/app"/>
+			<classes dir="${dir.temp.mule}/classes"/>
+			<lib dir="${dir.lib}">
+				<include name="*.jar" />
+			</lib>
+			<lib dir="${dir.lib}/couchbase-client-sdk">
+				<exclude name="*javadoc*" />
+				<exclude name="*sources*" />
+	        	<exclude name="*.txt" />
+			</lib>
+		</mulePackage>
+
+		<copy todir="${dir.artifacts}/${project.name}">
+			<fileset dir="${dir.temp.mule}"/>
+		</copy>
+
+		<mkdir dir="${dir.temp.war}" />
+		<copy todir="${dir.temp.war}">
+			<fileset dir="${dir.web}">
+				<include name="images/**" />
+				<include name="styles/**" />
+				<include name="scripts/**" />
+				<include name="includes/**" />
+			</fileset>
+		</copy>
+		<copy todir="${dir.temp.war}">
+			<fileset dir="${dir.web.app}" />
+		</copy>
+		
+		<mkdir dir="${dir.web-inf}" />
+		<copy todir="${dir.web-inf}">
+			<fileset dir="${dir.web.resources}" />
+		</copy>
+		<copy todir="${dir.web-inf.lib}" file="${file.app.jar}" />
+
+		<war warfile="${file.app.war}" webxml="${web.xml}">
+			<fileset dir="${dir.temp.war}" excludes="${dir.web-inf}/**" />
+			<webinf dir="${dir.web-inf}">
+				<exclude name="${web.xml}" />
+			</webinf>
+		</war>
+
+		<delete dir="${dir.temp}" />
+
+	</target>
+
+	<!--
+	*************************************************************************
+	* Deploy web application(war file) to the target server
+	*************************************************************************
+    -->
+	<target name="deploy" >
+		<!--
+		<echo>Deploy the demo web application to an application server"</echo>
+		<copy todir="${WEB_DEPLOY_HOME}" file="${file.app.war}" />
+        -->
+	   
+		<echo>Deploy the application to the Mule server</echo>
+	    <muleDeploy applicationFile="${file.mule.zip}" muleHome="${MULE_HOME}"/>		
+	</target>
+
+	<!--
+	*************************************************************************
+	* Undeploy web application(war file) from the target server
+	*************************************************************************
+    -->
+	<target name="undeploy">
+		<delete file="${WEB_DEPLOY_HOME}/${project.name}.war" />
+	</target>
+
+	<!--
+	*************************************************************************
+	* Generate javadoc
+	*************************************************************************
+    -->
+	<target name="javadoc">
+		<javadoc destdir="${dir.javadoc}" author="true" version="true" use="true" stylesheetfile="${dir.etc}/javadoc/javadoc.css" linksource="true" classpathref="bacpp.classpath" windowtitle="${project.title} API documentation - [version ]">
+
+			<fileset dir="${dir.src}" defaultexcludes="yes">
+				<exclude name="test/**" />
+				<exclude name="main/app/**" />
+				<exclude name="main/resources/**" />
+			</fileset>
+
+			<doctitle>
+				<![CDATA[<h1>${project.title} API documentation</h1>]]></doctitle>
+		<bottom>
+			<![CDATA[<i>Copyright &#169; 2012 Blackarrow. All Rights Reserved.</i>]]></bottom>
+			<group title="${project.title} Packages" packages="tv.blackarrow.cpp.*" />
+			<group title="${project.title} Schema Packages" packages="tv.blackarrow.cpp.schema.*" />
+		</javadoc>
+	</target>
+
+	<!--
+	*************************************************************************
+	* Create binaries for deployment
+	*************************************************************************
+    -->
+	<target name="api" depends="javadoc">
+		<mkdir dir="${dir.artifacts}" />
+		<war warfile="${file.api.war}" needxmlfile="false">
+			<fileset dir="${dir.javadoc}" />
+		</war>
+	</target>
+	
+	<!--
+	*************************************************************************
+	* Run JUnit tests
+	*************************************************************************
+	-->
+
+	<target name="run.junit.tests" depends="package">
+		<mkdir dir="${emma.instrumentation.dir}" />
+		<mkdir dir="${test.output.dir}" />
+
+		<emma enabled="${emma.enabled}">
+			<instr destdir="${emma.instrumentation.dir}" metadatafile="${test.coverage.dir}/coverage.emma" merge="true">
+				<instrpath>
+					<fileset dir="${files.dir}" includes="**/*.jar" />
+				</instrpath>
+			</instr>
+		</emma>
+		
+		<copy file="${dir.resources}/test/acquisition_feed_config.xml" todir="${dir.build}/resources/test"/>
+		<junit haltonerror="true" haltonfailure="true" printsummary="yes" fork="true" forkmode="once">
+			<classpath>
+                <pathelement location="${dir.build}/classes"/>
+				<pathelement location="${emma.instrumentation.dir}" />
+				<pathelement location="${dir.bin}" />
+				<fileset dir="${dir.lib}">
+					<include name="**/*.jar" />
+					<!-- Have to exclude ws-metro-harness-lib.jar, as it contains JUnitTaks class which conflicts with ant -->
+					<exclude name="ws-metro-harness-lib.jar" />
+				</fileset>
+                <path refid="mule.classpath"/>
+			</classpath>
+
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${test.output.dir}">
+				<fileset dir="${dir.src}">
+					<include name="test/**/*Test.java"/>
+				</fileset>
+			</batchtest>
+
+			<!-- Set JVM args for running code coverage -->
+			<jvmarg value="-Demma.coverage.out.file=${test.coverage.dir}/cpp_coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=true" />
+		</junit>
+
+		<!-- If emma is enabled (as is usually in a development env), read the .ec files and output a HTML report -->
+		<emma enabled="${emma.enabled}">
+			<report sourcepath="${src.dir}">
+				<fileset dir="${test.coverage.dir}">
+					<include name="*.emma" />
+				</fileset>
+
+				<xml outfile="${test.coverage.dir}/services_coverage.xml" />
+				<html outfile="${test.coverage.dir}/services_coverage.html" />
+			</report>
+		</emma>
+
+	</target>
+
+
+</project>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" 
+xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" 
+xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jersey="http://www.mulesoft.org/schema/mule/jersey" 
+xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+version="CE-3.9.0" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/3.9/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/3.9/mule-quartz.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/3.9/mule-cxf.xsd 
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.9/mule-vm.xsd 
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/3.9/mule-xml.xsd 
+http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/jersey/3.9/mule-jersey.xsd 
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/3.9/mule-file.xsd ">
+    <configuration>  
+        <default-threading-profile maxThreadsActive="64" maxThreadsIdle="64" threadTTL="60000"/> 
+    </configuration>
+    <spring:beans>
+        <spring:bean name="cpp_schedule_loading_job" class="tv.blackarrow.cpp.quartz.ScheduleLoadingJob" doc:name="Bean"/>
+        <spring:bean name="cpp_po_data_file_handling_job" class="tv.blackarrow.cpp.quartz.PODataFileHandlingJob" doc:name="Bean"/>
+        <spring:bean name="cpp_schedule_purger_job" class="tv.blackarrow.cpp.quartz.SchedulePurgerJob" doc:name="Bean"/>
+        <spring:bean name="init" class="tv.blackarrow.cpp.setting.BootStrap" doc:name="Bean"/>
+        <spring:bean id="cpp_data_maintenance_job" name="cpp_data_maintenance_job" class="tv.blackarrow.cpp.quartz.DataMaintenanceJob" doc:name="cpp_data_maintenance_job"/>     
+    	<spring:bean name="_mulePollingController" class="org.mule.transport.DefaultPollingController"/>
+		<spring:bean name="_muleClusterConfiguration" class="org.mule.config.NullClusterConfiguration"/>				
+    </spring:beans>
+
+    <http:connector name="HttpConnector" receiveBacklog="1024" clientSoTimeout="5000" serverSoTimeout="5000" doc:name="HttpConnector"/>
+
+	
+	<http:listener-config name="RealtimeUpdate_EventCRUD_Listener_Configuration" host="0.0.0.0" port="6680" />
+    <http:listener-config name="Admin_Listener_Configuration" host="0.0.0.0" port="6650" />
+    <http:listener-config name="SCC_Listener_Configuration" host="0.0.0.0" port="6640" />
+    <http:listener-config name="MCC_Listener_Configuration" host="0.0.0.0" port="6660" /> 
+	<http:listener-config name="SSR_Listener_Configuration" host="0.0.0.0" port="6670" />
+	<http:listener-config name="SCCBinary_Listener_Configuration" host="0.0.0.0" port="6666" />
+	<http:listener-config name="LinearADS_Listener_Configuration" host="0.0.0.0" port="6777" />
+	<http:listener-config name="ServiceCheck_Listener_Configuration" host="0.0.0.0" port="6003" />
+    <flow name="PODataFileHandlingCronJob" doc:name="PODataFileHandlingCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="PODataFileHandlingCronJob" cronExpression="0 * * * * ?" repeatInterval="0" startDelay="60000" doc:name="poDataFileHandlingQuartz">
+            <quartz:custom-job job-ref="cpp_po_data_file_handling_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="ScheduleLoaderCronJob" doc:name="ScheduleLoaderCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="ScheduleLoaderCronJob" cronExpression="15 45 * * * ?" repeatInterval="0" startDelay="60000" doc:name="scheduleLoadingQuartz">
+            <quartz:custom-job job-ref="cpp_schedule_loading_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="SchedulePurgerCronJob" doc:name="SchedulePurgerCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="SchedulePurgerCronJob" cronExpression="15 15 * * * ?" repeatInterval="0" startDelay="60000" doc:name="schedulePurgerQuartz">
+            <quartz:custom-job job-ref="cpp_schedule_purger_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="DataMaintenanceCronJob" doc:name="DataMaintenanceCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="DataMaintenanceJob" cronExpression="5 0/5 * * * ?" repeatInterval="0" startDelay="60000" doc:name="DataMaintenanceQuartz">
+            <quartz:custom-job job-ref="cpp_data_maintenance_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    
+    <flow name="signal_event_nomalize_flow" >
+		<http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/normalize"/>
+		<component class="tv.blackarrow.cpp.components.Scte35BinaryNormalizeComponent" doc:name="normalize"/>
+    </flow>
+    <flow name="signal_event_i03_nomalize_flow" >
+		<http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/i03/normalize"/>
+		<component class="tv.blackarrow.cpp.components.Scte35BinaryNormalizeComponent" doc:name="normalize"/>
+    </flow>
+    <flow name="signal_event_nomalize_flow_v2" >
+		<http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/normalize/v2"/>
+		<component class="tv.blackarrow.cpp.components.Scte35BinaryNormalizeComponent" doc:name="normalize"/>
+    </flow>
+    <flow name="signal_event_i03_nomalize_flow_v2" >
+		<http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/i03/normalize/v2"/>
+		<component class="tv.blackarrow.cpp.components.Scte35BinaryNormalizeComponent" doc:name="normalize"/>
+    </flow>
+     <flow name="Bis_Monitor_Flow" doc:name="Bis_Monitor_Flow">
+        <http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/pretirgger/monitor"/>
+        <component class="tv.blackarrow.cpp.components.PretriggerMonitorComponent" doc:name="pretrigger"/>
+    </flow>
+    
+    <flow name="io3_signal_event_flow" doc:name="io3_signal_event_flow">
+        <http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="i03/scc/signal"/>
+        <message-properties-transformer scope="invocation" doc:name="schema">
+        <add-message-property key="schema" value="i03"/>
+        </message-properties-transformer>
+        <flow-ref name="signal_event_sub_flow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="signal_event_flow" doc:name="signal_event_flow">
+        <http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="scc/signal"/>
+         <message-properties-transformer scope="invocation" doc:name="schema">
+        <add-message-property key="schema" value="i01"/>
+        </message-properties-transformer>
+        
+        <flow-ref name="signal_event_sub_flow" doc:name="Flow Reference"/>
+    </flow>
+
+	<sub-flow name="signal_event_sub_flow" doc:name="signal_event_sub_flow">
+		<component class="tv.blackarrow.cpp.components.SCCRequestComponent" doc:name="SCC Request" />
+		<choice doc:name="Choice">
+			<when expression="trigger_blackout_events_by_event_id=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.BlackOutDecisionAiringIDComponent" doc:name="Blackout Decision By Airing ID" />
+					<component class="tv.blackarrow.cpp.components.SCCResponseComponent" doc:name="SCC Response" />
+				</processor-chain>
+			</when>
+			<when expression="unsupported=true" evaluator="header">
+				<processor-chain>					
+					<component class="tv.blackarrow.cpp.components.scc.NoOpSCCReponseComponent" doc:name="SCC Unsupported Response" />
+				</processor-chain>
+			</when>
+			<when expression="delete=true" evaluator="header">
+				<processor-chain>					
+					<component class="tv.blackarrow.cpp.components.scc.DeleteSCCReponseComponent" doc:name="SCC Delete Response" />
+				</processor-chain>
+			</when>
+			<when expression="blackout=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.BlackOutDecisionComponent" doc:name="Blackout Decision" />
+					<component class="tv.blackarrow.cpp.components.SCCResponseComponent" doc:name="SCC Response" />
+				</processor-chain>
+			</when>
+			<when expression="scheduleless_blackout=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.scc.schedulelessaltevent.SchedulelessAltEventDecisionComponent" doc:name="Scheduleless Blackout Decision" />
+					<component class="tv.blackarrow.cpp.components.scc.schedulelessaltevent.SCCResponseComponent" doc:name="SCC Response" />
+				</processor-chain>
+			</when>
+			<when expression="scte224=true" evaluator="header">
+				<choice doc:name="Choice">
+					<when expression="mediaBased=true" evaluator="header">
+						<processor-chain>
+							<component class="tv.blackarrow.cpp.components.scc.scte224.MediaDecisionComponent" doc:name="Media Based Decision" />
+						</processor-chain>
+					</when>
+					<otherwise>
+						<processor-chain><!-- For future -->
+							<component class="tv.blackarrow.cpp.components.scc.scte224.GenericDecisionComponent" doc:name="Generic Decision" />
+						</processor-chain>
+					</otherwise>
+				</choice>
+				<component class="tv.blackarrow.cpp.components.scc.scte224.SCCResponseComponent" doc:name="SCC 224 Response" />
+			</when>
+			<when expression="placementOpportunity=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.POISDecisionComponent" doc:name="POIS Decision" />
+					<component class="tv.blackarrow.cpp.components.UpdateADSComponent" doc:name="Update ADS" />
+					<component class="tv.blackarrow.cpp.components.po.SCCResponseComponent" doc:name="SCC Response" />
+				</processor-chain>
+			</when>
+			<otherwise>
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.UnsupportedSCCSignalComponent" doc:name="Unsupported SCC Signal Component" />
+					<component class="tv.blackarrow.cpp.components.SCCResponseComponent" doc:name="SCC Response" />
+				</processor-chain>
+			</otherwise>
+		</choice>
+
+	</sub-flow>
+    
+     <flow name="io3_manifest_signal_event_flow" doc:name="io3_manifest_signal_event_flow">
+        <http:listener config-ref="MCC_Listener_Configuration" doc:name="HTTP" path="i03/mcc/signal"/>
+        <message-properties-transformer scope="invocation" doc:name="schema">
+        <add-message-property key="schema" value="i03"/>
+        </message-properties-transformer>
+        <flow-ref name="manifest_signal_event_sub_flow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="manifest_signal_event_flow" doc:name="manifest_signal_event_flow">
+        <http:listener config-ref="MCC_Listener_Configuration" doc:name="HTTP" path="mcc/signal"/>
+        <message-properties-transformer scope="invocation" doc:name="schema">
+        <add-message-property key="schema" value="i01"/>
+        </message-properties-transformer>
+        <flow-ref name="manifest_signal_event_sub_flow" doc:name="Flow Reference"/>
+    </flow>
+
+	<sub-flow name="manifest_signal_event_sub_flow" doc:name="manifest_signal_event_sub_flow">
+		<component class="tv.blackarrow.cpp.components.mcc.GeneralManifestEventComponent" doc:name="Manifest Event Entry" />
+		<choice doc:name="Choice">
+			<when expression="scte224=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.mcc.scte224.SCTE224ManifestlEventComponent" doc:name="Media Based Decision" />
+				</processor-chain>
+			</when>
+			<when expression="noop=true" evaluator="header">
+				<processor-chain>
+					<component class="tv.blackarrow.cpp.components.mcc.NoopManifestlEventComponent" doc:name="NOOP Manifest Event Response" />
+				</processor-chain>
+			</when>
+			<otherwise>
+				<processor-chain><!-- For future -->
+					<component class="tv.blackarrow.cpp.components.mcc.other.ManifestlEventComponent" doc:name="Manifest Event Response" />
+				</processor-chain>
+			</otherwise>
+		</choice>		
+	</sub-flow>
+    
+    <flow name="admin_flow" doc:name="admin_flow">
+        <http:listener config-ref="Admin_Listener_Configuration" doc:name="HTTP" path="admin"/>
+        <component class="tv.blackarrow.cpp.components.AdminComponent" doc:name="Admin Service"/>
+    </flow>
+    <flow name="Binary_Conversion_Flow" doc:name="Binary_Conversion_Flow">
+        <http:listener config-ref="SCCBinary_Listener_Configuration" doc:name="HTTP" path="scc/bc"/>
+        <component class="tv.blackarrow.cpp.components.BinaryConversionComponent" doc:name="Binary Conversion"/>
+    </flow>
+    <flow name="I03_Binary_Conversion_Flow" doc:name="I03_Binary_Conversion_Flow">
+        <http:listener config-ref="SCCBinary_Listener_Configuration" doc:name="HTTP" path="i03/scc/bc"/>
+        <component class="tv.blackarrow.cpp.components.I03BinaryConversionComponent" doc:name="I03 Binary Conversion"/>
+    </flow>
+    <flow name="Binary_Generation_Flow" doc:name="Binary_Generation_Flow">
+        <http:listener config-ref="SCCBinary_Listener_Configuration" doc:name="HTTP" path="scc/bg"/>
+        <component class="tv.blackarrow.cpp.components.BinaryGenerationComponent" doc:name="Binary Generation"/>
+    </flow>
+    <flow name="I03_Binary_Generation_Flow" doc:name="I03_Binary_Generation_Flow">
+        <http:listener config-ref="SCCBinary_Listener_Configuration" doc:name="HTTP" path="i03/scc/bg"/>
+        <component class="tv.blackarrow.cpp.components.I03BinaryGenerationComponent" doc:name="I03 Binary Generation"/>
+    </flow>
+    <flow name="ADS_Accept_Notification_Simulator_Flow" doc:name="ADS_Accept_Notification_Simulator_Flow">
+        <http:listener config-ref="LinearADS_Listener_Configuration" doc:name="HTTP" path="simulator/ponotification"/>
+        <component class="tv.blackarrow.cpp.components.ADSAcceptNotificationSimulatorComponent" doc:name="PO Notification Accept Simulation"/>
+    </flow>
+    <flow name="Service_Check_Flow" doc:name="Service_Check_Flow">
+        <http:listener config-ref="ServiceCheck_Listener_Configuration" doc:name="HTTP" path="check"/>
+        <component class="tv.blackarrow.cpp.components.POISServiceCheckComponent" doc:name="POIS Service Check"/>
+    </flow>
+    
+    <flow name="Transcode_Simulator" doc:name="Transcode Simulator">
+        <http:listener config-ref="Admin_Listener_Configuration" doc:name="Generic" path="transcoder/*"/>
+        <jersey:resources doc:name="Transcoder" doc:description="Transcoder Simulator">
+            <component class="tv.blackarrow.cpp.webservice.impl.TranscoderSimulatorServiceImpl"/>
+        </jersey:resources>
+    </flow>
+    <flow name="data_query" doc:name="Data Query">
+    	<http:listener config-ref="Admin_Listener_Configuration" doc:name="HTTP" path="query/*"/>
+        <set-property propertyName="MULE_ENCODING" value="UTF-8" doc:name="Property" />
+        <jersey:resources doc:name="dataquery" doc:description="Data Query">
+            <component class="tv.blackarrow.cpp.webservice.impl.DataQueryServiceImpl"/>
+        </jersey:resources>
+    </flow>
+    <flow name="Realtime_Blackout_Event_CRUD_Flow" doc:name="Realtime_Blackout_Event_CRUD_Flow">
+        <http:listener config-ref="RealtimeUpdate_EventCRUD_Listener_Configuration" doc:name="HTTP" path="event/blackout"/>
+        <component class="tv.blackarrow.cpp.components.RealtimeBlackoutEventCRUDComponent" doc:name="Event Updates"/>
+    </flow>
+     <flow name="Realtime_Media_Event_CRUD_Flow" doc:name="Realtime_Media_Event_CRUD_Flow">
+        <http:listener config-ref="RealtimeUpdate_EventCRUD_Listener_Configuration" doc:name="HTTP" path="event/media"/>
+        <component class="tv.blackarrow.cpp.components.scte224.RealtimeMediaEventCRUDComponent" doc:name="Media Event Updates"/>
+    </flow>
+    <!-- Application healthcheck endpoints starts here. All the URLs point to the same implementation, they are introduced on Operations request for their convenience. -->
+    <flow name="Admin_Healthcheck" doc:name="Admin_Healthcheck">
+        <http:listener config-ref="Admin_Listener_Configuration" doc:name="HTTP" path="admin/healthcheck"/> 
+        <component class="tv.blackarrow.cpp.components.admin.Healthcheck" doc:name="Admin Healthcheck"/>
+    </flow>
+    <flow name="SCC_Healthcheck" doc:name="SCC_Healthcheck">
+        <http:listener config-ref="SCC_Listener_Configuration" doc:name="HTTP" path="healthcheck" /> 
+        <component class="tv.blackarrow.cpp.components.admin.Healthcheck" doc:name="SCC Healthcheck"/>
+    </flow>
+    <flow name="MCC_Healthcheck" doc:name="MCC_Healthcheck">
+        <http:listener config-ref="MCC_Listener_Configuration" doc:name="HTTP" path="healthcheck" /> 
+        <component class="tv.blackarrow.cpp.components.admin.Healthcheck" doc:name="MCC Healthcheck"/>
+    </flow>
+    <!-- Application healtcheck Endpoints ends here. -->
+    <!--  PSN Endpoint -->
+    <flow name="STATUS_NOTIFICATION" doc:name ="STATUS_NOTIFICATION">
+        <http:listener config-ref="SSR_Listener_Configuration" doc:name="HTTP" path="i03/signal/psn"/>
+    	<component class="tv.blackarrow.cpp.components.PSNComponent" doc:name="Process Status Notification"/>
+    </flow>
+         <!--  SignalStateRequest Endpoint -->
+	<flow name="signal_state_request_flow" doc:name="signal_state_request_flow">
+		<http:listener config-ref="SSR_Listener_Configuration" doc:name="HTTP" path="i03/signal/ssr"/>
+    	<component class="tv.blackarrow.cpp.components.signalstate.i03.SignalStateRequestComponent" doc:name="Signal State Request"/>
+    </flow>
+</mule>

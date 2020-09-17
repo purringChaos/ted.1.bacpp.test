@@ -1,0 +1,17 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="settingBean" class="tv.blackarrow.cpp.pretrigger.beans.PretriggerSettingBean">
+		<property name="bisUrl" value="http://bishostname:8265/bis/query/ess"/>
+		<property name="triggerAdvanceTime" value="300000"/>
+		<property name="bisQueryInterval" value="30"/>
+		<property name="pretriggerFrequency" value="4"/>
+		<property name="bisQueryTimeout" value="10000"/>
+		<property name="maxRetry" value="3"/>
+		<property name="bisBreakWindow" value="60"/>
+		<property name="serviceEnabled" value="false"/>
+		<!-- the the minimum value before SCTE-35 event trigger in millsecond. 
+		The value can be used to define UTC stop time in pre-trigger -->
+		<property name="advanceTimeMinimum" value="10000"/>
+	</bean>	
+</beans>
+

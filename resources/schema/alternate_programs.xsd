@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="zones">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="zone" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="zone">
+		<xs:simpleType>
+			<xs:restriction base="xs:int">
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="contentid">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="alternatePrograms">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="alternateProgram" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="description" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="alternateProgram">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="acquisition_points" minOccurs="0"/>
+				<xs:element ref="zones" minOccurs="0"/>
+				<xs:element ref="contentid" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="interval" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:duration"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="eventId" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="action" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="create"/>
+						<xs:enumeration value="delete"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="startDateTime" use="required" type="UTCPointType"/>
+			<xs:attribute name="endDateTime" use="optional" type="UTCPointType"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="acquisition_points" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="acquisition_point_identify" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="acquisition_point_identify">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:simpleType name="UTCPointType">
+		<xs:annotation>
+			<xs:documentation> UTC Point Type expressed as xs:dateTime</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:pattern value=".+T[^+\-]+Z"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

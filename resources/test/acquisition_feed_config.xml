@@ -1,0 +1,119 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean class="tv.blackarrow.cpp.setting.AcquisitionConfigBean" id="acquisitionPointBean">
+        <property name="acquisitionPointMap">
+            <map>
+                <entry key="test">
+                    <map>
+                        <entry key="Blackout Confirmation" value="out-of-band"/>
+                        <entry key="Schedules" value="Y"/>
+                        <entry key="Feed ID" value="Strata"/>
+                        <entry key="HLS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="Signal Time Offset" value="45000"/>
+                        <entry key="HSS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="SCC Delete Empty Break" value="Y"/>
+                        <entry key="Include In Point" value="Y"/>
+                        <entry key="Program Start Buffer" value="10"/>
+                        <entry key="Content ID Frequency" value="5"/>
+                        <entry key="Transcoder Endpoint" value="http://localhost"/>
+                        <entry key="Alt Event Type" value="ALT_EVENT"/>
+                    </map>
+                </entry>
+                <entry key="AQNY1QN">
+                    <map>
+                        <entry key="Blackout Confirmation" value="In-Band"/>
+                        <entry key="Schedules" value="Y"/>
+                        <entry key="Feed ID" value="NY1QN000000000000000"/>
+                        <entry key="HLS Interface Type" value="TWC_LINEAR"/>
+                        <entry key="Signal Time Offset" value="-5000"/>
+                        <entry key="HSS Interface Type" value="TWC_LINEAR"/>
+                        <entry key="SCC Delete Empty Break" value="Y"/>
+                        <entry key="Include In Point" value="Y"/>
+                        <entry key="Program Start Buffer" value="2000"/>
+                        <entry key="Content ID Frequency" value="10"/>
+                        <entry key="Transcoder Endpoint" value=""/>
+                        <entry key="Alt Event Type" value="ALT_EVENT"/>
+                    </map>
+                </entry>
+                <entry key="AQSCIAQ">
+                    <map>
+                        <entry key="Blackout Confirmation" value="In-Band"/>
+                        <entry key="Schedules" value="Y"/>
+                        <entry key="Feed ID" value="SCI00000000000000000"/>
+                        <entry key="HLS Interface Type" value="TWC_LINEAR"/>
+                        <entry key="Signal Time Offset" value="1000"/>
+                        <entry key="HSS Interface Type" value="TWC_LINEAR"/>
+                        <entry key="SCC Delete Empty Break" value="Y"/>
+                        <entry key="Include In Point" value="Y"/>
+                        <entry key="Program Start Buffer" value="1000"/>
+                        <entry key="Content ID Frequency" value="5"/>
+                        <entry key="Transcoder Endpoint" value=""/>
+                        <entry key="Alt Event Type" value="ALT_EVENT"/>
+                    </map>
+                </entry>
+                <entry key="Test05">
+                    <map>
+                        <entry key="Blackout Confirmation" value="In-Band"/>
+                        <entry key="Schedules" value="Y"/>
+                        <entry key="Feed ID" value="Test05"/>
+                        <entry key="HLS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="Signal Time Offset" value="120000"/>
+                        <entry key="HSS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="SCC Delete Empty Break" value="Y"/>
+                        <entry key="Include In Point" value="Y"/>
+                        <entry key="Program Start Buffer" value="10"/>
+                        <entry key="Content ID Frequency" value="5"/>
+                        <entry key="Transcoder Endpoint" value=""/>
+                        <entry key="Alt Event Type" value="ALT_EVENT"/>
+                    </map>
+                </entry>
+                <entry key="test2">
+                    <map>
+                        <entry key="Blackout Confirmation" value="In-Band"/>
+                        <entry key="Schedules" value="Y"/>
+                        <entry key="Feed ID" value="Strata"/>
+                        <entry key="HLS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="Signal Time Offset" value="45000"/>
+                        <entry key="HSS Interface Type" value="LINEAR_PARITY"/>
+                        <entry key="SCC Delete Empty Break" value="Y"/>
+                        <entry key="Include In Point" value="Y"/>
+                        <entry key="Program Start Buffer" value="10"/>
+                        <entry key="Content ID Frequency" value="8"/>
+                        <entry key="Transcoder Endpoint" value=""/>
+                        <entry key="Alt Event Type" value="ALT_EVENT"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean class="tv.blackarrow.cpp.setting.FeedConfigBean" id="feedConfigBean">
+        <property name="feedConfigMap">
+            <map>
+                <entry key="NY1QN000000000000000">
+                    <map>
+                        <entry key="Network ID" value="twc.com"/>
+                        <entry key="Provider ID" value="twc.com"/>
+                    </map>
+                </entry>
+                <entry key="Strata">
+                    <map>
+                        <entry key="Network ID" value="test1"/>
+                        <entry key="Provider ID" value="test1"/>
+                    </map>
+                </entry>
+                <entry key="Test05">
+                    <map>
+                        <entry key="Network ID" value="Test55_ProviderTest55_Provider"/>
+                        <entry key="Provider ID" value="Test55_ProviderTest55_Provider"/>
+                    </map>
+                </entry>
+                <entry key="SCI00000000000000000">
+                    <map>
+                        <entry key="Network ID" value="twc.com"/>
+                        <entry key="Provider ID" value="twc.com"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

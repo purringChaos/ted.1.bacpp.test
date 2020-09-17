@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Placement Opportunity Data Model (PODM) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.scte.org/schemas/130-3/2008a/adm/podm" xmlns:podm="http://www.scte.org/schemas/130-3/2008a/adm/podm" xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" xmlns:adm="http://www.scte.org/schemas/130-3/2008a/adm" xmlns:gis="http://www.scte.org/schemas/130-8/2010a/gis" targetNamespace="http://www.scte.org/schemas/130-3/2008a/adm/podm" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- -->
+	<xsd:import namespace="http://www.scte.org/schemas/130-2/2008a/core" schemaLocation="SCTE_130-2_2008a.xsd"/>
+	<xsd:import namespace="http://www.scte.org/schemas/130-8/2010a/gis" schemaLocation="SCTE_130-8_2010a.xsd"/>
+	<xsd:import namespace="http://www.scte.org/schemas/130-3/2008a/adm" schemaLocation="SCTE_130-3_2010.xsd"/>
+	<!---->
+	<!---->
+	<!--****************************-->
+	<!--***** POIS Elements *****-->
+	<!--****************************-->
+	<xsd:element name="ContentGroupFilter" type="ContentGroupFilterType">
+		<xsd:annotation>
+			<xsd:documentation>The filter mechanism for a group of content applicable to this Query Result.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Interactive" type="InteractiveType">
+		<xsd:annotation>
+			<xsd:documentation>The type of interactivity, if any, that is allowed</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="LinearAvailBindingV2" type="LinearAvailBindingV2Type" substitutionGroup="adm:LinearAvailBinding">
+		<xsd:annotation>
+			<xsd:documentation>V2 extended linear avail placement opportunity specific information.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MenuCategory" type="MenuCategoryType">
+		<xsd:annotation>
+			<xsd:documentation>On screen menu grouping identifier.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="OpportunityBindingV2" type="OpportunityBindingV2Type" substitutionGroup="adm:OpportunityBinding">
+		<xsd:annotation>
+			<xsd:documentation>V2 extended generic opportunity information bridge.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="OpportunityConstraintsV2" type="OpportunityConstraintsV2Type" substitutionGroup="adm:OpportunityConstraints">
+		<xsd:annotation>
+			<xsd:documentation>The V2 revised OpportunityConstraints element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="PlacementOpportunityTerms" type="PlacementOpportunityTermsType">
+		<xsd:annotation>
+			<xsd:documentation>The advertising space identified owner and terms.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="PlacementOpportunityV2" type="PlacementOpportunityV2Type" substitutionGroup="adm:PlacementOpportunity">
+		<xsd:annotation>
+			<xsd:documentation>The V2 revised Placement Opportunity root element (i.e., the root of the Placement Opportunity Data Model (PODM)).</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Plane" type="PlaneType">
+		<xsd:annotation>
+			<xsd:documentation>The show-ability of the ad space.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Programming" type="ProgrammingType"/>
+	<xsd:element name="Size" type="SizeType">
+		<xsd:annotation>
+			<xsd:documentation>The spatial size of the ad space.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="SpatialPosition" type="SpatialPositionType">
+		<xsd:annotation>
+			<xsd:documentation>Spatial information describing an ad space.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="TopCorner" type="TopCornerType">
+		<xsd:annotation>
+			<xsd:documentation>The uppermost and leftmost coordinate of this space.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!---->
+	<!--*************************-->
+	<!--***** POIS Types *****-->
+	<!--*************************-->
+	<!--POIS Simple Types-->
+	<xsd:simpleType name="poGroupIndexAttrType">
+		<xsd:restriction base="xsd:unsignedInt"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="unitsIdentificationAttrType">
+		<xsd:restriction base="core:nonEmptyStringType">
+			<xsd:pattern value="(pixels|percentage|private:.+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!---->
+	<xsd:attributeGroup name="opportunityTypeV2ExtAttrGroup">
+		<xsd:attribute name="poGroupIndex" type="poGroupIndexAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Placement Opportunity group index allows one or more Placement Opportunities to be commonly associated. The value zero means unknown or unused. Valid index values generally start at one and typcially increment by one.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<!---->
+	<!--POIS Complex Types-->
+	<xsd:complexType name="ContentGroupFilterType">
+		<xsd:choice>
+			<xsd:element ref="gis:BasicQueryFilter"/>
+			<xsd:element ref="gis:AdvancedQueryFilter"/>
+			<!---->
+			<xsd:element ref="core:Ext"/>
+		</xsd:choice>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="InteractiveType">
+		<xsd:sequence>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="core:nonEmptyStringType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Interactive identification string.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="LinearAvailBindingV2Type">
+		<xsd:complexContent>
+			<xsd:extension base="adm:LinearAvailBindingType">
+				<xsd:attributeGroup ref="opportunityTypeV2ExtAttrGroup"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="MenuCategoryType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="OpportunityBindingV2Type">
+		<xsd:complexContent>
+			<xsd:extension base="adm:OpportunityBindingType">
+				<xsd:attributeGroup ref="opportunityTypeV2ExtAttrGroup"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="OpportunityConstraintsV2Type">
+		<xsd:complexContent>
+			<xsd:extension base="adm:OpportunityConstraintsType">
+				<xsd:sequence>
+					<xsd:element ref="SpatialPosition" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="Interactive" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PlacementOpportunityTermsType">
+		<xsd:sequence>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="owner" type="core:nonEmptyStringType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The recognized name of that owner for billing purposes.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="exclusiveSales" type="xsd:boolean" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The recognized name of the exclusive sales channel for this opportunity.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="revenueSplit" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The portion of revenue from the sale of the opportunity destined to the owner.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:nonNegativeInteger">
+					<xsd:minInclusive value="0"/>
+					<xsd:maxInclusive value="100"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="PlacementOpportunityV2Type">
+		<xsd:complexContent>
+			<xsd:extension base="adm:PlacementOpportunityType">
+				<xsd:sequence>
+					<xsd:element ref="adm:SystemContext" minOccurs="0"/>
+					<xsd:element ref="Programming" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The reference stream of content which contains the opportunity.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="PlacementOpportunityTerms" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>The business terms of the placement opportunity.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PlaneType">
+		<xsd:attribute name="opacity" type="xsd:nonNegativeInteger" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The opaqueness level of this space (i.e. alpha channel).</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="zOrder" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The relative position in the z-plane to other spaces.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:nonNegativeInteger">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="ProgrammingType">
+		<xsd:sequence>
+			<xsd:element ref="ContentGroupFilter" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The content set description this placement opportunity is applicable to.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="MenuCategory" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="adm:Entertainment" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="SizeType">
+		<xsd:attribute name="xSize" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The width of this space. </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ySize" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The height of this space.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="units" type="unitsIdentificationAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>xSize and ySize attribute's unit identification. For example, pixels or percentage, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="SpatialPositionType">
+		<xsd:sequence>
+			<xsd:element ref="Plane" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The show-ability of this space. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="Size" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The size of this space.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="TopCorner" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The uppermost and leftmost pixel of this space.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="Interactive" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="resolutionHorizontal" type="xsd:nonNegativeInteger" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The horizontal resolution.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="resolutionVertical" type="xsd:nonNegativeInteger" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The verticial resolution.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="units" type="unitsIdentificationAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>resolutionHorizontal and resolutionVertical attribute's unit identification. For example, pixels or percentage, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="TopCornerType">
+		<xsd:attribute name="xPosition" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The leftmost position of this space.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="yPosition" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The uppermost position of this space.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="units" type="unitsIdentificationAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>xPosition and yPosition attribute's unit identification. For example, pixels or percentage, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!---->
+	<!---->
+</xsd:schema>

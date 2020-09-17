@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ManifestConfirmConditionEvent
+	xsi:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/confirmation/2
+OC-SP-ESAM-API-D02_Manifest.xsd"
+	xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/confirmation/2"
+	xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<!-- AcquisitionSignalID 168fdcf8-edbb-42df-8acb-99f4c8ae3c2e -->
+	<AcquiredSignal acquisitionPointIdentity="ACQUISITION_POINT"
+		acquisitionSignalID="168fdcf8edbb42df8acb99f4c8ae3c2e">
+		<!-- Time derived by splice_time in splice_insert with pts_adjustment from 
+			splice_info_section applied -->
+		<sig:UTCPoint utcPoint="CURRENT_TIME" />
+		<!-- UPID is hex encoding of SIGNAL:gFkRZZobSm+Nd7f5ccW1lA== -->
+		<sig:BinaryData signalType="SCTE35">BINDAR_DATA</sig:BinaryData>
+		<!-- Stream times dervied by the SPE -->
+		<sig:StreamTimes>
+			<sig:StreamTime timeType="PTS" timeValue="4452723280" />
+			<sig:StreamTime timeType="HSS" timeValue="4452723280" />
+		</sig:StreamTimes>
+	</AcquiredSignal>
+</ManifestConfirmConditionEvent>

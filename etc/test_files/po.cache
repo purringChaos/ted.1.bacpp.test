@@ -1,0 +1,32 @@
+<cache>
+  <entry>
+    <string>feed001</string>
+    <cache>
+      <entry>
+        <string>schedule002</string>
+        <tv.blackarrow.cpp.po.PoSchedule>
+          <feedId>feed001</feedId>
+          <scheduleId>schedule002</scheduleId>
+          <scheduleDate>2022-01-01 00:00:00.0 PST</scheduleDate>
+          <windows>
+            <tv.blackarrow.cpp.po.PoWindow>
+              <startTime>2022-01-01 13:00:00.0 PST</startTime>
+              <endTime>2022-01-01 14:00:00.0 PST</endTime>
+              <breaks>
+                <tv.blackarrow.cpp.po.PoBreak>
+                  <positionInWindow>1</positionInWindow>
+                  <spots>
+                    <tv.blackarrow.cpp.po.PlacementOpportunity>
+                      <poId>poid002</poId>
+                      <positionInBreak>0</positionInBreak>
+                    </tv.blackarrow.cpp.po.PlacementOpportunity>
+                  </spots>
+                </tv.blackarrow.cpp.po.PoBreak>
+              </breaks>
+            </tv.blackarrow.cpp.po.PoWindow>
+          </windows>
+        </tv.blackarrow.cpp.po.PoSchedule>
+      </entry>
+    </cache>
+  </entry>
+</cache>

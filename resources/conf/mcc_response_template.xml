@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mcc-templates>
+	<replacements>
+		<replace key="[text1]" macro="[scte35.segmentationDuration]">[macroValue]</replace>
+		<replace key="[text2]" macro="[scte35.spliceCommandType]">SpliceType=[macroValue]</replace>
+		<replace key="[text3]" macro="[feed.providerId-feedId]">Paid=[macroValue]</replace>
+		<replace key="[text4]" macro="[scte35.segmentationEventId]">segmentationEventId=[macroValue]</replace>
+		<replace key="[text5]" macro="[scte35.segmentationTypeId]">segmentationTypeId=[macroValue]</replace>
+		<replace key="[text6]" macro="[scte35.webDeliveryAllowedFlag]">webDeliveryAllowedFlag=[macroValue]</replace>
+		<replace key="[text7]" macro="[scte35.noRegionalBlackoutFlag]">noRegionalBlackoutFlag=[macroValue]</replace>
+		<replace key="[text8]" macro="[scte35.archiveAllowedFlag]">archiveAllowedFlag=[macroValue]</replace>
+		<replace key="[text9]" macro="[scte35.deviceRestrictions]">deviceRestrictions=[macroValue]</replace>
+		<replace key="[text10]" macro="[scte35.segmentationDuration]">segmentationDuration=[macroValue]</replace>
+		<replace key="[text11]" macro="[scte35.segmentationUpid]">segmentationUpid=[macroValue]</replace>
+		<replace key="[text12]" macro="[scte35.segmentationUpid]">SignalId=[macroValue]</replace>
+		<replace key="[text13]" macro="[scte35.segmentationUpidType]">upidType=[macroValue]</replace>
+		<replace key="[text14]" macro="[feed.feedId]">feed=[macroValue]</replace>
+		<replace key="[text15]" macro="[feed.providerId]">network=[macroValue]</replace>
+		<replace key="[text16]" macro="[scte35.utcPoint]">utc=[macroValue]</replace>
+		<replace key="[text17]" macro="[scte35.acquisitionPointIdentity]">ap=[macroValue]</replace>
+		<replace key="[text18]" macro="[scte35.segmentationSignalId]">SignalId=[macroValue]</replace>
+		<replace key="[text19]" macro="[scte35.segmentationUpidProgramId]">PROGRAM=[macroValue]</replace>
+		<replace key="[text20]" macro="[scte35.segmentationNum]">BREAK=[macroValue]</replace>
+		<replace key="[text21]" macro="[feed.providerId]">NETWORK=[macroValue]</replace>
+	</replacements>
+	<hls-template type="PlacementOpportunity">
+		<confirmation-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-EXIT:[text1],[text2],[text3],[text4],[text5],[text6],[text7],[text8],[text9],[text10],[text11],Acds=FW</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal}/[text1],[text2],[text3],[text4],[text5],[text6],[text7],[text8],[text9],[text10],[text11],Acds=FW</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-RETURN:[text1],[text2]</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=LIVE_DAI</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=LIVE_DAI</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=LIVE_DAI</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="SchedulelessInbandPlacementOpportunity">
+		<confirmation-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-EXIT:[text1],[text19],[text20],[text21]</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal}/[text1],[text19],[text20],[text21]</tag>
+			</span-segment>
+			<last-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal}/[text1],[text19],[text20],[text21]</tag>
+				<tag locality="after">#EXT-X-SIGNAL-RETURN:[text1],[text19],[text20],[text21]</tag>
+			</last-segment>
+		</confirmation-segments>
+	</hls-template>
+	<hls-template type="ProgramStart">
+		<confirmation-segments>
+			<first-segment>
+				<tag adapt="true" locality="before">#EXT-X-SIGNAL-EXIT:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</span-segment>
+			<last-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+				<tag adapt="true" locality="after">#EXT-X-SIGNAL-RETURN:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="BlackoutOverride">
+		<confirmation-segments>
+			<first-segment>
+				<tag adapt="true" locality="before">#EXT-X-SIGNAL-EXIT:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</span-segment>
+			<last-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+				<tag adapt="true" locality="after">#EXT-X-SIGNAL-RETURN:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="ProgramRunoverUnplanned">
+		<confirmation-segments>
+			<first-segment>
+				<tag adapt="true" locality="before">#EXT-X-SIGNAL-EXIT:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</span-segment>
+			<last-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+				<tag adapt="true" locality="after">#EXT-X-SIGNAL-RETURN:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="ContentIdentification">
+		<confirmation-segments>
+			<first-segment>
+				<tag adapt="true" locality="before">#EXT-X-SIGNAL-EXIT:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</first-segment>
+			<span-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</span-segment>
+			<last-segment>
+				<tag adapt="true">#EXT-X-SIGNAL-SPAN:${secondsFromSignal},[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+				<tag adapt="true" locality="after">#EXT-X-SIGNAL-RETURN:[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="ProgramEnd">
+		<confirmation-segments>
+		<!-- Intentionally left blank based on customer(Charter) feedback.-->
+		</confirmation-segments>
+		<abort-segments>
+			<first-segment>
+				<tag locality="before">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</first-segment>
+			<span-segment>
+				<tag>#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</span-segment>
+			<last-segment>
+				<tag locality="after">#EXT-X-SIGNAL-ABORT,SpliceType=ALT_CONTENT</tag>
+			</last-segment>
+		</abort-segments>
+	</hls-template>
+
+	<hls-template type="NoBlackoutProgramStart">
+		<confirmation-segments>
+			<first-segment>
+				<tag locality="before" adapt="true">#EXT-X-SIGNAL-EXIT:[text12],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID}</tag>
+			</first-segment>
+		</confirmation-segments>
+		<abort-segments>
+		</abort-segments>
+	</hls-template>
+	<hls-template type="NoBlackoutProgramEnd">
+		<confirmation-segments>
+			<last-segment>
+				<tag locality="after" adapt="true">#EXT-X-SIGNAL-RETURN:[text12],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID}</tag>
+			</last-segment>
+		</confirmation-segments>
+		<abort-segments>
+		</abort-segments>
+	</hls-template>
+	<dash-template type="PlacementOpportunityStart">
+		<template-response templateType="DASH_DAI_Start">[text3],[text4],[text5],,,,,[text10],[text11]</template-response>
+	</dash-template>
+	<dash-template type="SchedulelessInbandPlacementOpportunityStart">
+		<template-response templateType="DASH_DAI_Start">[text19],[text20],[text21]</template-response>
+	</dash-template>
+	<dash-template type="PlacementOpportunityEnd">
+		<template-response templateType="DASH_DAI_End">[text5]</template-response>
+	</dash-template>
+	<dash-template type="ProgramStart">
+		<template-response templateType="DASH_Program_Start">[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</template-response>
+	</dash-template>
+	<dash-template type="ProgramRunoverUnplanned">
+        <template-response templateType="DASH_Program_Runover_Unplanned">[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</template-response>
+    </dash-template>
+    <dash-template type="BlackoutOverride">
+        <template-response templateType="DASH_Blackout_Override">[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</template-response>
+    </dash-template>
+	<dash-template type="ProgramEnd">
+		<template-response templateType="DASH_Program_End"></template-response>
+	</dash-template>
+	<dash-template type="ContentIdentification">
+		<template-response templateType="DASH_Program_Cid">[text18],SpliceType=ALT_CONTENT,[text14],[text15],[text17],[text16],streamID=${streamID},[text6],[text7],[text8],[text9]</template-response>
+	</dash-template>
+	<dash-template type="ProgramExt">
+		<template-response templateType="DASH_Program_Ext">[text12],[text3],[text4],[text5],[text6],[text7],[text8],[text9],[text10],[text11]</template-response>
+	</dash-template>
+	<dash-template type="NoBlackoutProgramStart">
+		<template-response templateType="DASH_Program_Start">[text12],[text14],[text15],[text17],[text16]</template-response>
+	</dash-template>
+	<dash-template type="NoBlackoutProgramEnd">
+		<template-response templateType="DASH_Program_End">[text12],[text14],[text15],[text17],[text16]</template-response>
+	</dash-template>
+</mcc-templates>

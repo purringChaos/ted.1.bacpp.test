@@ -1,0 +1,906 @@
+<!--DRAFT SCTE 130-8 2010a r1 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.scte.org/schemas/130-8/2010a/gis" xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" targetNamespace="http://www.scte.org/schemas/130-8/2010a/gis" elementFormDefault="qualified">
+	<!-- Import of CORE namespace -->
+	<xsd:import namespace="http://www.scte.org/schemas/130-2/2008a/core" schemaLocation="SCTE_130-2_2008a.xsd"/>
+	<!-- Misc GIS types -->
+	<xsd:element name="AdvancedFilterElement" type="AdvancedFilterElementType">
+		<xsd:annotation>
+			<xsd:documentation>Advanced query language identification and processing commands.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="AdvancedQueryFilter" type="AdvancedQueryFilterType">
+		<xsd:annotation>
+			<xsd:documentation>A sequence of AdvancedFilterElements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="AdvancedQueryLanguage" type="AdvancedQueryLanguageType">
+		<xsd:annotation>
+			<xsd:documentation>Supported advanced query language identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="AdvancedQueryResult" type="AdvancedQueryResultType">
+		<xsd:annotation>
+			<xsd:documentation>Results from a query using an AdvancedQueryFilter sequence.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="AdvancedQueryResultData" type="AdvancedQueryResultDataType"/>
+	<xsd:element name="BasicFilterElement" type="BasicFilterElementType"/>
+	<xsd:element name="BasicQueryDataModelDescription" type="BasicQueryDataModelDescriptionType">
+		<xsd:annotation>
+			<xsd:documentation>The unqiue qualifiers definitions and descriptions associated with a service data model and applicable to constructing a basic query.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="BasicQueryFilter" type="BasicQueryFilterType">
+		<xsd:annotation>
+			<xsd:documentation>A sequence of BasicFilterElements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="BasicQueryResult" type="BasicQueryResultType" substitutionGroup="BasicQueryResultAbstract">
+		<xsd:annotation>
+			<xsd:documentation>Results from a query using either a UniqueQualifier element or a BasicQueryFilter sequence.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="BasicQueryResultAbstract" type="BasicQueryResultAbstractType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Abstract base type for result.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Cursor" type="CursorType">
+		<xsd:annotation>
+			<xsd:documentation>Cursor based access to a data model inquiry.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="EnumerationValue" type="EnumerationValueType">
+		<xsd:annotation>
+			<xsd:documentation>Specific enumeration string.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MaxFloat" type="MinMaxFloatType">
+		<xsd:annotation>
+			<xsd:documentation>Maximum float Qualifier value.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MinFloat" type="MinMaxFloatType">
+		<xsd:annotation>
+			<xsd:documentation>Minimum float Qualifier value.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MaxInteger" type="MinMaxIntegerType">
+		<xsd:annotation>
+			<xsd:documentation>Maximum interger Qualifier value.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MinInteger" type="MinMaxIntegerType">
+		<xsd:annotation>
+			<xsd:documentation>Minimum interger Qualifier value.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MaxLength" type="MaxLengthType">
+		<xsd:annotation>
+			<xsd:documentation>Maximum Qualifier length.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Qualifier" type="QualifierType">
+		<xsd:annotation>
+			<xsd:documentation>Name/value pair each describing one object characteristic.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="QualifierDeclaration" type="QualifierDeclarationType">
+		<xsd:annotation>
+			<xsd:documentation>Individiual object characteristic identifier declaration.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="QualifierDescription" type="QualifierDescriptionType">
+		<xsd:annotation>
+			<xsd:documentation>Individual Qualifier descriptions and details.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="QualifierSet" type="QualifierSetType">
+		<xsd:annotation>
+			<xsd:documentation>Group of name/value object characteristic pairs describing an object.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="Query" type="QueryType">
+		<xsd:annotation>
+			<xsd:documentation>Detailed data model inquiry.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="QueryResult" type="QueryResultType">
+		<xsd:annotation>
+			<xsd:documentation>Detailed data model inquiry result set.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="ServiceDataModel" type="ServiceDataModelType">
+		<xsd:annotation>
+			<xsd:documentation>Service data model identifier. Typically, a URI.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="ServiceDataModelProfile">
+		<xsd:annotation>
+			<xsd:documentation>Service data model identification and its supported features.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ServiceDataModelProfileType"/>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="UniqueQualifier" type="UniqueQualifierType">
+		<xsd:annotation>
+			<xsd:documentation>A sequence of one or more Qualifiers that, taken together, uniquely identify a single object in a service data model.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="UniqueQualifierDeclaration" type="UniqueQualifierDeclarationType">
+		<xsd:annotation>
+			<xsd:documentation>Identification of the set of Qualifiers that, taken together, may identify a single object in a service data model.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- =================== -->
+	<!-- Part 8 basic types  -->
+	<!-- =================== -->
+	<xsd:simpleType name="cursorIdAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Original cursor identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="cursorIdRefAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Reference to original cursor.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="cursorIdAttrType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="expandOutputAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Expanded output indicator.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:boolean"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="filterElementNameAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Name attribute value.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="filterElementValueAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Value attribute value.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="NotificationTypeEnumeration">
+		<xsd:annotation>
+			<xsd:documentation>One of "new", "update" or "delete".</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType">
+			<xsd:pattern value="(new|update|delete|private:.+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="qualifierNameAttrType">
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="QualifierValueTypeEnumerationType">
+		<xsd:restriction base="core:nonEmptyStringType">
+			<xsd:pattern value="(integer|float|string|enumeration|private:.+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="QueryFilterOpTypeEnumeration">
+		<xsd:restriction base="core:nonEmptyStringType">
+			<xsd:enumeration value="include"/>
+			<xsd:enumeration value="exclude"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="queryIdAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Original query identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="queryIdRefAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Reference to original query.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="queryIdAttrType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="queryLanguageAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Query language attribute value.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType">
+			<xsd:pattern value="(XPath|XQuery|private:.+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="resultSetSizeOnlyAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Result set size only output indicator.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:boolean"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="totalResultSetSizeAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Total available results.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="uniqueQualifierNameAttrType">
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<!-- =================== -->
+	<!-- Part 8 message types  -->
+	<!-- =================== -->
+	<!-- ================================ -->
+	<!-- ListSupportedFeaturesRequestType -->
+	<!-- ================================ -->
+	<xsd:complexType name="ListSupportedFeaturesRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================================= -->
+	<!-- ListSupportedFeaturesResponseType -->
+	<!-- ================================= -->
+	<xsd:complexType name="ListSupportedFeaturesResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Callout" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="ServiceDataModelProfile" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ========================= -->
+	<!-- ListQualifiersRequestType -->
+	<!-- ========================= -->
+	<xsd:complexType name="ListQualifiersRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="ServiceDataModel" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ========================== -->
+	<!-- ListQualifiersResponseType -->
+	<!-- ========================== -->
+	<xsd:complexType name="ListQualifiersResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="BasicQueryDataModelDescription" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================ -->
+	<!-- NotificationType -->
+	<!-- ================ -->
+	<xsd:complexType name="NotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_NotificationBaseType">
+				<xsd:sequence>
+					<xsd:element ref="QueryResult"/>
+				</xsd:sequence>
+				<xsd:attribute name="noticeType" type="NotificationTypeEnumeration" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Data change identifier.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =============================== -->
+	<!-- NotificationAcknowledgementType -->
+	<!-- =============================== -->
+	<xsd:complexType name="NotificationAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_AcknowledgementBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- NotificationRegistrationRequestType -->
+	<!-- =================================== -->
+	<xsd:complexType name="NotificationRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Callout" maxOccurs="unbounded"/>
+					<xsd:element ref="Query"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ==================================== -->
+	<!-- NotificationRegistrationResponseType -->
+	<!-- ==================================== -->
+	<xsd:complexType name="NotificationRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- ListNotificationRegistrationRequestType -->
+	<!-- ======================================= -->
+	<xsd:complexType name="ListNotificationRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previous, original NotificationRegistrationRequest message. If this attribute is ommitted then all registrations may be returned.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================== -->
+	<!-- ListNotificationRegistrationResponseType -->
+	<!-- ======================================== -->
+	<xsd:complexType name="ListNotificationRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =============================== -->
+	<!-- DeregistrationNotificationType  -->
+	<!-- =============================== -->
+	<xsd:complexType name="DeregistrationNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_NotificationBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:StatusCode" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previous, original NotificationRegistrationRequest message. If this attribute is ommitted then all registrations, scoped by the identity attribute, are being deleted.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================================= -->
+	<!-- DeregistrationAcknowledgementType -->
+	<!-- ================================= -->
+	<xsd:complexType name="DeregistrationAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_AcknowledgementBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================================= -->
+	<!-- NotificationDeregisterRequestType -->
+	<!-- ================================= -->
+	<xsd:complexType name="NotificationDeregisterRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previous, original NotificationRegistrationRequest message. If this attribute is ommitted then all registrations, scoped by the identity attribute, are being deleted.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================================== -->
+	<!-- NotificationDeregisterResponseType -->
+	<!-- ================================== -->
+	<xsd:complexType name="NotificationDeregisterResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<!-- QueryRequestType  -->
+	<!-- ================= -->
+	<xsd:complexType name="QueryRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:element ref="Cursor"/>
+						<xsd:element ref="Query"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================== -->
+	<!-- QueryResponseType  -->
+	<!-- ================== -->
+	<xsd:complexType name="QueryResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="QueryResult" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================= -->
+	<!-- CreateCursorRequestType -->
+	<!-- ======================= -->
+	<xsd:complexType name="CreateCursorRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="Query"/>
+				</xsd:sequence>
+				<xsd:attribute name="cursorId" type="cursorIdAttrType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Unique cursor identifier.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="cursorExpires" type="core:dateTimeTimezoneType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Proposed cursor expiration date and time.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================== -->
+	<!-- CreateCursorResponseType -->
+	<!-- ======================== -->
+	<xsd:complexType name="CreateCursorResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:attribute name="cursorExpires" type="core:dateTimeTimezoneType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Definitive date and time when the cursor becomes invalid and the cursor data is no longer is available.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="totalResultSetSize" type="totalResultSetSizeAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Total available results.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================= -->
+	<!-- CancelCursorRequestType -->
+	<!-- ======================= -->
+	<xsd:complexType name="CancelCursorRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:attribute name="cursorRef" type="cursorIdRefAttrType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Unique cursor identifier (i.e., the cursorId attribute) supplied in the CreateCursorRequest message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================== -->
+	<!-- CancelCursorResponseType -->
+	<!-- ======================== -->
+	<xsd:complexType name="CancelCursorResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================== -->
+	<!-- Part 8 element types  -->
+	<!-- =================== -->
+	<!-- ========================= -->
+	<!-- AdvancedFilterElementType -->
+	<!-- ========================= -->
+	<xsd:complexType name="AdvancedFilterElementType" mixed="true">
+		<xsd:complexContent mixed="true">
+			<xsd:extension base="xsd:anyType">
+				<xsd:attribute name="queryId" type="queryIdAttrType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Unique query identifier.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="ql" type="queryLanguageAttrType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Query language specifier.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================== -->
+	<!-- AdvancedQueryFilterType  -->
+	<!-- ======================== -->
+	<xsd:complexType name="AdvancedQueryFilterType">
+		<xsd:sequence>
+			<xsd:element ref="AdvancedFilterElement" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="op" type="QueryFilterOpTypeEnumeration" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Processing instruction relative to cumulative result set.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ======================== -->
+	<!-- AdvancedQueryLanguageType  -->
+	<!-- ======================== -->
+	<xsd:complexType name="AdvancedQueryLanguageType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:attribute name="version" type="core:nonEmptyStringType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Advanced query language revision identification.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ======================= -->
+	<!-- AdvancedQueryResultType -->
+	<!-- ======================= -->
+	<xsd:complexType name="AdvancedQueryResultType">
+		<xsd:choice>
+			<xsd:element ref="UniqueQualifier" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Returned when an advanced query sets @expandOutput to false.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="AdvancedQueryResultData" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Returned for all other advanced queries.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- =========================== -->
+	<!-- AdvancedQueryResultDataType -->
+	<!-- =========================== -->
+	<xsd:complexType name="AdvancedQueryResultDataType" mixed="true">
+		<xsd:complexContent mixed="true">
+			<xsd:extension base="xsd:anyType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ====================== -->
+	<!-- BasicFilterElementType -->
+	<!-- ====================== -->
+	<xsd:complexType name="BasicFilterElementType">
+		<xsd:attribute name="name" type="filterElementNameAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Characteristic identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="value" type="filterElementValueAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Characteristic query value.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="valueIsRegex" type="xsd:boolean" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Data contained in the value attribute is a regular expression.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ================================== -->
+	<!-- BasicQueryDataModelDescriptionType -->
+	<!-- ================================== -->
+	<xsd:complexType name="BasicQueryDataModelDescriptionType">
+		<xsd:sequence>
+			<xsd:element ref="ServiceDataModel"/>
+			<xsd:element ref="UniqueQualifierDeclaration" maxOccurs="unbounded"/>
+			<xsd:element ref="QualifierDescription" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ===================== -->
+	<!-- BasicQueryFilterType  -->
+	<!-- ===================== -->
+	<xsd:complexType name="BasicQueryFilterType">
+		<xsd:annotation>
+			<xsd:documentation>Sequence of BasicFilterElements.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="BasicFilterElement" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="op" type="QueryFilterOpTypeEnumeration" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Processing instruction relative to cumulative result set.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ===================== -->
+	<!-- BasicQueryResultAbstractType-->
+	<!-- ===================== -->
+	<xsd:complexType name="BasicQueryResultAbstractType" abstract="true">
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ===================== -->
+	<!-- BasicQueryResultType  -->
+	<!-- ===================== -->
+	<xsd:complexType name="BasicQueryResultType">
+		<xsd:complexContent>
+			<xsd:extension base="BasicQueryResultAbstractType">
+				<xsd:choice>
+					<xsd:element ref="UniqueQualifier" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Returned when Query's BasicFilterElement has @expandOuptut=false.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="QualifierSet" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Return only 1 when query uses UniqueQualifier and returns 1 to unbounded when Query's BasciFilterElement has @expandOutput=true.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ========== -->
+	<!-- CursorType -->
+	<!-- ========== -->
+	<xsd:complexType name="CursorType">
+		<xsd:attribute name="cursorRef" type="cursorIdRefAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique cursor identifier supplied in the original query.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="queryRef" type="queryIdAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Original unique query identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="startIndex" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Start point within the result set.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="count" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Result items to return.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- =====================-->
+	<!--EnumeationValueType-->
+	<!-- =====================-->
+	<xsd:complexType name="EnumerationValueType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ==================-->
+	<!--MinMaxIntegerType-->
+	<!-- ==================-->
+	<xsd:complexType name="MinMaxIntegerType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:integer">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ================-->
+	<!--MinMaxFloatType-->
+	<!-- ================-->
+	<xsd:complexType name="MinMaxFloatType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:float">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ===============-->
+	<!--MaxLengthType-->
+	<!-- ===============-->
+	<xsd:complexType name="MaxLengthType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ============= -->
+	<!-- QualifierType -->
+	<!-- ============= -->
+	<xsd:complexType name="QualifierType">
+		<xsd:attribute name="name" type="qualifierNameAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The characteristic's identification string.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="value" type="core:nonEmptyStringType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The named characteristic's data value.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ============= -->
+	<!--QualifierDeclarationType -->
+	<!-- ============= -->
+	<xsd:complexType name="QualifierDeclarationType">
+		<xsd:attribute name="name" type="qualifierNameAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The characteristic's identification string.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ========================= -->
+	<!-- QualifierDescriptionType  -->
+	<!-- ========================= -->
+	<xsd:complexType name="QualifierDescriptionType">
+		<xsd:choice minOccurs="0">
+			<xsd:sequence>
+				<xsd:element ref="MinInteger" minOccurs="0"/>
+				<xsd:element ref="MaxInteger" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element ref="MinFloat" minOccurs="0"/>
+				<xsd:element ref="MaxFloat" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:element ref="MaxLength"/>
+			<xsd:element ref="EnumerationValue" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext"/>
+		</xsd:choice>
+		<xsd:attribute name="name" type="core:nonEmptyStringType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Qualifier name.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="valueType" type="QualifierValueTypeEnumerationType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The qualifier's value type.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="description" type="core:nonEmptyStringType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Descriptive text.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ================ -->
+	<!-- QualifierSetType -->
+	<!-- ================ -->
+	<xsd:complexType name="QualifierSetType">
+		<xsd:sequence>
+			<xsd:element ref="Qualifier" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ========== -->
+	<!-- QueryType  -->
+	<!-- ========== -->
+	<xsd:complexType name="QueryType">
+		<xsd:sequence>
+			<xsd:element ref="ServiceDataModel" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element ref="UniqueQualifier"/>
+				<xsd:element ref="BasicQueryFilter" maxOccurs="unbounded"/>
+				<xsd:element ref="AdvancedQueryFilter" maxOccurs="unbounded"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="queryId" type="queryIdAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique query identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="expandOutput" type="expandOutputAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Result expansion control.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="resultSetSizeOnly" type="resultSetSizeOnlyAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Return only a result count.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="uniqueQualifierNameRef" type="uniqueQualifierNameAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Return the named UniqueQualifer based result, if more than one UniqueQualifier is available for the service data model.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- =============== -->
+	<!-- QueryResultType -->
+	<!-- =============== -->
+	<xsd:complexType name="QueryResultType">
+		<xsd:choice minOccurs="0">
+			<xsd:element ref="BasicQueryResultAbstract"/>
+			<xsd:element ref="AdvancedQueryResult"/>
+		</xsd:choice>
+		<xsd:attribute name="queryRef" type="queryIdAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Original query identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="resultSetSize" type="xsd:nonNegativeInteger" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Result count contained within the accompanying result element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="totalResultSetSize" type="totalResultSetSizeAttrType">
+			<xsd:annotation>
+				<xsd:documentation>Total available results.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ==================== -->
+	<!-- ServiceDataModelType -->
+	<!-- ==================== -->
+	<xsd:complexType name="ServiceDataModelType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:anyURI">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- =============================== -->
+	<!-- ServiceDataModelProfileType     -->
+	<!-- =============================== -->
+	<xsd:complexType name="ServiceDataModelProfileType">
+		<xsd:sequence>
+			<xsd:element ref="ServiceDataModel"/>
+			<xsd:element ref="AdvancedQueryLanguage" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ======================= -->
+	<!-- UniqueQualifierType     -->
+	<!-- ======================= -->
+	<xsd:complexType name="UniqueQualifierType">
+		<xsd:sequence>
+			<xsd:element ref="Qualifier" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="uniqueQualifierNameRef" type="uniqueQualifierNameAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Unique name identifying the qualifier group. This attribute shall be present when two unique qualifiers exist for a single service data model.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!-- ======================= -->
+	<!-- UniqueQualifierDeclarationType     -->
+	<!-- ======================= -->
+	<xsd:complexType name="UniqueQualifierDeclarationType">
+		<xsd:sequence>
+			<xsd:element ref="QualifierDeclaration" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="uniqueQualifierName" type="uniqueQualifierNameAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Unique name identifying the qualifier group. This attribute shall be present when two unique qualifiers exist for a single service data model.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<!---->
+</xsd:schema>

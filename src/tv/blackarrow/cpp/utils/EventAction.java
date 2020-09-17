@@ -1,0 +1,13 @@
+/**
+ * 
+ */
+package tv.blackarrow.cpp.utils;
+
+
+/**
+ * @author amit
+ *
+ */
+public enum EventAction {
+	CREATE, UPDATE, STOP_NOW, DELETE, SIGNAL_ABORT, CONFIRMED, ERROR, COMPLETE, TERRITORY_UPDATE, START_NOW, STOP_NOW_FOR_ALL_AP, LINEAR_EVENT_NA, PROGRAM_RUNOVER_UNPLANNED, BLACKOUT_OVERRIDE, COMBINE_BO_PRU;
+}

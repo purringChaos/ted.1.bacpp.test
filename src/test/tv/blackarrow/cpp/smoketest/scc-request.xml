@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SignalProcessingEvent
+	xsi:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2 ESAM_Signal.xsd"
+	xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2"
+	xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<AcquiredSignal acquisitionPointIdentity="ACQUISITION_POINT"
+		acquisitionSignalID="unit-test-f311e9f8034511e28500" acquisitionTime="2013-06-06T16:10:44.013Z">
+		<sig:UTCPoint utcPoint="CURRENT_TIME" />
+		<sig:BinaryData signalType="SCTE35">
+			/DAvAAAAAAAA///wFAVAAArzf+//xbpe3/4AKT1sAAEAAAAKAAhDVUVJAAAAAOo6Lgc=
+		</sig:BinaryData>
+	</AcquiredSignal>
+</SignalProcessingEvent>

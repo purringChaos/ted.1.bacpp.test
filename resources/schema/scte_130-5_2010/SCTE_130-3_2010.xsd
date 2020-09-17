@@ -1,0 +1,1445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.scte.org/schemas/130-3/2008a/adm" xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" targetNamespace="http://www.scte.org/schemas/130-3/2008a/adm" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.scte.org/schemas/130-2/2008a/core" schemaLocation="SCTE_130-2_2008a.xsd"/>
+	<!-- -->
+	<!--<<Start Placement Messaging>>-->
+	<!--ADM to ADS Placement Request Message-->
+	<xsd:complexType name="PlacementRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="SystemContext" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>General system context and registration identification refinements specific to this PlacementRequest.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="Service" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Placement service identification refinement details specific to this PlacementRequest.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="Entertainment" minOccurs="0"/>
+					<xsd:element ref="Client" minOccurs="0"/>
+					<xsd:element ref="ADMData" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Private ADM data that shall be returned (echoed back) by the ADS in the PlacementResponse message.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="PlacementOpportunity" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="updatesAllowed" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>The ADM allows/accepts updates for the PlacementRequest message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementRequest" type="PlacementRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Placement request message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADS to ADM Placement Response Message-->
+	<xsd:complexType name="PlacementResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:group ref="CommonPlacementDecisionMessageElements"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementResponse" type="PlacementResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Placement response message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADS to ADM Placement Update Notification Message-->
+	<xsd:complexType name="PlacementUpdateNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_NotificationBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:StatusCode" minOccurs="0"/>
+					<xsd:group ref="CommonPlacementDecisionMessageElements"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="messageRef" type="core:messageRefAttrType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Reference to the original PlacementRequest message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="updateAction" type="core:nonEmptyStringType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Message command. For example, "replace", "cancel, etc.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementUpdateNotification" type="PlacementUpdateNotificationType">
+		<xsd:annotation>
+			<xsd:documentation>Placement update notification message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADM to ADS Placement Update Acknowledgement Message-->
+	<xsd:complexType name="PlacementUpdateAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_AcknowledgementBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementUpdateAcknowledgement" type="PlacementUpdateAcknowledgementType">
+		<xsd:annotation>
+			<xsd:documentation>Placement update acknowledgement message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--<<End Placement Messaging>>-->
+	<!---->
+	<!--<<Start Placement Status Messaging>>-->
+	<!--ADM to any Placement Status Notification Message-->
+	<xsd:complexType name="PlacementStatusNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_NotificationBaseType">
+				<xsd:sequence>
+					<xsd:element ref="PlayData" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementStatusNotification" type="PlacementStatusNotificationType">
+		<xsd:annotation>
+			<xsd:documentation>Placement status notification message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Any to ADM Placement Status Acknowledgement Message-->
+	<xsd:complexType name="PlacementStatusAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_AcknowledgementBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementStatusAcknowledgement" type="PlacementStatusAcknowledgementType">
+		<xsd:annotation>
+			<xsd:documentation>Placement status acknoweldgement message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--<<End Placement Status Messaging>>-->
+	<!---->
+	<!--<<Start Service Channel Management>>-->
+	<!--List ADM Offered Services Request Message-->
+	<xsd:complexType name="ListADMServicesRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ListADMServicesRequest" type="ListADMServicesRequestType">
+		<xsd:annotation>
+			<xsd:documentation>List ADM offered placement services request message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--List ADM Offered Services Response Message-->
+	<xsd:complexType name="ListADMServicesResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="ADMCapabilities" minOccurs="0"/>
+					<xsd:element ref="ServiceDescription" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>List of placement service descriptions defined by a system context and a list of services within that context for which placement decisions may be provided.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="core:Callout" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ListADMServicesResponse" type="ListADMServicesResponseType">
+		<xsd:annotation>
+			<xsd:documentation>List ADM offered placement services response message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--List active ADS Registrations Request Message-->
+	<xsd:complexType name="ListADSRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previous, original ADSRegistrationRequest message. If this attribute is ommitted then all registrations may be returned.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ListADSRegistrationRequest" type="ListADSRegistrationRequestType">
+		<xsd:annotation>
+			<xsd:documentation>Request active ADS registration list message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--List Acitve ADS Registrations Response Message-->
+	<xsd:complexType name="ListADSRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="ADSRegistrationRequest" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>List of active ADS registrations.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ListADSRegistrationResponse" type="ListADSRegistrationResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Response containing active ADS registration list message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADS to ADM Registration Request Message-->
+	<xsd:complexType name="ADSRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="ServiceDescription" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>List of placement services (via ServiceDescriptions) for which the ADS desires to provide placement decisions.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="core:Callout" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSRegistrationRequest" type="ADSRegistrationRequestType">
+		<xsd:annotation>
+			<xsd:documentation>ADS registration request message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADM to ADS Registration Response Message-->
+	<xsd:complexType name="ADSRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Callout" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSRegistrationResponse" type="ADSRegistrationResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Registration response message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADS to ADM Deregister Request Message-->
+	<xsd:complexType name="ADSDeregisterRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_RequestBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previous ADSRegistrationRequest message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSDeregisterRequest" type="ADSDeregisterRequestType">
+		<xsd:annotation>
+			<xsd:documentation>ADS deregister request message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADM to ADS Deregister Response Message-->
+	<xsd:complexType name="ADSDeregisterResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_ResponseBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSDeregisterResponse" type="ADSDeregisterResponseType">
+		<xsd:annotation>
+			<xsd:documentation>Deregister response message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADM to ADS Deregistration Notification Message-->
+	<xsd:complexType name="ADSDeregistrationNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_NotificationBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:StatusCode"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="registrationRef" type="core:registrationRefAttrType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Reference to a previously accepted ADSRegistrationRequest message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSDeregistrationNotification" type="ADSDeregistrationNotificationType">
+		<xsd:annotation>
+			<xsd:documentation>Deregistration notification message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADS Deregistration Acknowledgement Message-->
+	<xsd:complexType name="ADSDeregistrationAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="core:Msg_AcknowledgementBaseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ADSDeregistrationAcknowledgement" type="ADSDeregistrationAcknowledgementType">
+		<xsd:annotation>
+			<xsd:documentation>Deregistration acknoweledgement message element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!---->
+	<!---->
+	<!--Part 3 global attribute types-->
+	<xsd:simpleType name="eventRangeEndDateTimeAttrType">
+		<xsd:annotation>
+			<xsd:documentation>End date and time for a group of events.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:dateTimeTimezoneType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="eventRangeStartDateTimeAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Start date and time for a group of events.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:dateTimeTimezoneType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="eventTypeAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Event type name identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="localServiceRefAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Placement messages local service element cross-reference linkage identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:idAttrType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="placementActionAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Placement action identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="placementOpportunitiesExpectedAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunities expected count relative to the content.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="placementOpportunityNumberAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunity number/identifier relative to the content.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="placementOpportunityTypeAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunity type identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="core:nonEmptyStringType"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="positionAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Subdivision position identifier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger">
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--Part 3 global attribute group types-->
+	<xsd:attributeGroup name="eventBaseAttrsType">
+		<xsd:annotation>
+			<xsd:documentation>Common attributes required for all events.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="type" type="eventTypeAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Event type identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="time" type="core:dateTimeTimezoneType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Time event occurred.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="identityADM" type="core:identityAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Origin identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="systemADM" type="core:systemAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Origin identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="identityADS" type="core:identityAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>The ADS origin/target logical service identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="messageRef" type="core:messageRefAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Message reference.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="eventRangeDateTimeAttrsType">
+		<xsd:annotation>
+			<xsd:documentation>Start and end date time for the events contained within this element.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="eventRangeStartDateTime" type="eventRangeStartDateTimeAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>A start date and time for all event elements contained within this element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="eventRangeEndDateTime" type="eventRangeEndDateTimeAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>A end date and time for all event elements contained within this element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="opportunityBindingBaseAttrType">
+		<xsd:annotation>
+			<xsd:documentation>Common attributes required by all placement opportunity binding types.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="opportunityType" type="placementOpportunityTypeAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Placement opportunity type identification. Examples are: pre-roll, post-roll, interstitial, pause, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="opportunityNumber" type="placementOpportunityNumberAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Placement opportunity identification relative/within the content.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="opportunitiesExpected" type="placementOpportunitiesExpectedAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Total expected placement opportunity count.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<!---->
+	<!--Part 3 global base types-->
+	<xsd:complexType name="EventBaseType">
+		<xsd:annotation>
+			<xsd:documentation>Event elements base type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="core:StatusCode" minOccurs="0"/>
+			<xsd:element ref="SystemContext" minOccurs="0"/>
+			<xsd:element ref="Client" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="Entertainment"/>
+				<xsd:element ref="EntertainmentNPT"/>
+			</xsd:choice>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="Spot"/>
+				<xsd:element ref="SpotNPT"/>
+			</xsd:choice>
+			<xsd:element ref="NPT" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="eventBaseAttrsType"/>
+	</xsd:complexType>
+	<xsd:complexType name="NormalPlayTimeType">
+		<xsd:annotation>
+			<xsd:documentation>Normal play time (NPT) element base type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:attribute name="scale" type="xsd:decimal" use="required">
+					<xsd:annotation>
+						<xsd:documentation>Positive or negative decimal value (e.g. -2.0 for 2x rewind, etc.).</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="PlacementCountType">
+		<xsd:annotation>
+			<xsd:documentation>Placement count base type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!---->
+	<!--Part 3 global element groups-->
+	<xsd:group name="CommonPlacementDecisionMessageElements">
+		<xsd:annotation>
+			<xsd:documentation>Common elements in PlacementResponse and PlacementUpdateNotification.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="SystemContext" minOccurs="0"/>
+			<xsd:element ref="Service" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="Entertainment" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Reference to the programming/entertainment content.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="Client" minOccurs="0"/>
+			<xsd:element ref="ADMData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Copy of the element if received in the PlacementRequest message.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="PlacementDecision" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:group>
+	<!---->
+	<!--###############-->
+	<!--#Part 3 Elements#-->
+	<!--###############-->
+	<!--ADM Capabilities element-->
+	<xsd:complexType name="ADMCapabilitiesType">
+		<xsd:sequence>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="placementStatusOnlyRegistration" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>PlacementStatusNotification only registration is supported. Omission indicates PlacementStatusNotification only registration is not supported.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="ADMCapabilities" type="ADMCapabilitiesType">
+		<xsd:annotation>
+			<xsd:documentation>ADM supported options.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--ADMData element-->
+	<xsd:complexType name="ADMDataType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="ADMData" type="ADMDataType">
+		<xsd:annotation>
+			<xsd:documentation>Data that must be returned if sent.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Channel element-->
+	<xsd:complexType name="ChannelType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Channel" type="ChannelType">
+		<xsd:annotation>
+			<xsd:documentation>Channel identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Client element-->
+	<xsd:complexType name="ClientType">
+		<xsd:sequence>
+			<xsd:element ref="core:CurrentDateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Current client time.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="TerminalAddress" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Client endpoint identification.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="TargetCode" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>List of addressable (targeting) criteria.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="Client" type="ClientType">
+		<xsd:annotation>
+			<xsd:documentation>Container for client addressability/targeting specifics and refinements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Provider element-->
+	<xsd:complexType name="ContentProviderType">
+		<xsd:sequence>
+			<xsd:element ref="core:ContentDataModel" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="providerID" type="core:nonEmptyStringType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Content provider name/identification.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="ContentProvider" type="ContentProviderType">
+		<xsd:annotation>
+			<xsd:documentation>Content provider name and/or identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Content Rotation List element-->
+	<xsd:complexType name="ContentRotationListType">
+		<xsd:sequence>
+			<xsd:element ref="core:Content" minOccurs="2" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="ContentRotationList" type="ContentRotationListType">
+		<xsd:annotation>
+			<xsd:documentation>Container for ad spot list used in a placement rotation.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Desired/Ideal elements-->
+	<xsd:element name="DesiredDuration" type="core:DurationType">
+		<xsd:annotation>
+			<xsd:documentation>Desired (ideal) run-time length.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="DesiredPlacementCount" type="PlacementCountType">
+		<xsd:annotation>
+			<xsd:documentation>Desired (ideal) placement count.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Effective start and end date/time elements-->
+	<xsd:element name="EffectiveEndDateTime">
+		<xsd:annotation>
+			<xsd:documentation>Expiration date and time when the container becomes inactive. Ommision implies never. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="core:dateTimeTimezoneType">
+					<xsd:anyAttribute namespace="##any" processContents="lax"/>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="EffectiveStartDateTime">
+		<xsd:annotation>
+			<xsd:documentation>Commencement date and time when the container becomes active. Ommision implies immediate. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="core:dateTimeTimezoneType">
+					<xsd:anyAttribute namespace="##any" processContents="lax"/>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!--Entertainment element-->
+	<xsd:complexType name="EntertainmentType">
+		<xsd:sequence>
+			<xsd:element ref="core:Content"/>
+			<xsd:element ref="EntertainmentNPT" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>NPT specific to the core:Content element above.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="Entertainment" type="EntertainmentType">
+		<xsd:annotation>
+			<xsd:documentation>Entertainment content identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--EntertainmentNPT element-->
+	<xsd:element name="EntertainmentNPT" type="NormalPlayTimeType">
+		<xsd:annotation>
+			<xsd:documentation>NPT scoped by (relative to) an Entertainment element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--EntertainmentScopedEvents element-->
+	<xsd:complexType name="EntertainmentScopedEventsType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>The Entertaiment element applies to all events in the choice sequence. The Entertainment element shall not appear in any child named event element.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element ref="Entertainment"/>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element ref="Events"/>
+				<xsd:element ref="SpotScopedEvents"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="eventRangeDateTimeAttrsType"/>
+		<xsd:anyAttribute namespace="##any"/>
+	</xsd:complexType>
+	<xsd:element name="EntertainmentScopedEvents" type="EntertainmentScopedEventsType">
+		<xsd:annotation>
+			<xsd:documentation>Events all relative to the static Entertainment element declaration.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Events element-->
+	<xsd:complexType name="EventsType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element ref="PlacementStatusEvent"/>
+			<xsd:element ref="SessionEvent"/>
+			<xsd:element ref="SystemEvent"/>
+			<xsd:element ref="ViewerEvent"/>
+			<xsd:element ref="core:Ext"/>
+		</xsd:choice>
+		<xsd:attributeGroup ref="eventRangeDateTimeAttrsType"/>
+		<xsd:anyAttribute namespace="##any"/>
+	</xsd:complexType>
+	<xsd:element name="Events" type="EventsType">
+		<xsd:annotation>
+			<xsd:documentation>Container for named event element sequence.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Linear Avail Binding element-->
+	<xsd:complexType name="LinearAvailBindingType">
+		<xsd:sequence>
+			<xsd:element ref="ProviderAvailID" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="Window" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="opportunityBindingBaseAttrType"/>
+		<xsd:attribute name="spliceEventID" type="xsd:nonNegativeInteger" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Spice event identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="LinearAvailBinding" type="LinearAvailBindingType">
+		<xsd:annotation>
+			<xsd:documentation>Linear avail placement opportunity specific information.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Max/Min types-->
+	<xsd:element name="MaxDuration" type="core:DurationType">
+		<xsd:annotation>
+			<xsd:documentation>Maximum run-time length.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MaxPlacementCount" type="PlacementCountType">
+		<xsd:annotation>
+			<xsd:documentation>Maximum placement count.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MinDuration" type="core:DurationType">
+		<xsd:annotation>
+			<xsd:documentation>Minimum run-time length.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="MinPlacementCount" type="PlacementCountType">
+		<xsd:annotation>
+			<xsd:documentation>Minimum placement count.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Network element-->
+	<xsd:complexType name="NetworkType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Network" type="NetworkType">
+		<xsd:annotation>
+			<xsd:documentation>Network identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Normal Play Time element-->
+	<xsd:element name="NPT" type="NormalPlayTimeType">
+		<xsd:annotation>
+			<xsd:documentation>Normal play time.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Opportunity Binding element-->
+	<xsd:complexType name="OpportunityBindingType">
+		<xsd:sequence>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="opportunityBindingBaseAttrType"/>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="OpportunityBinding" type="OpportunityBindingType">
+		<xsd:annotation>
+			<xsd:documentation>Generic opportunity information bridge.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Opportunity Constraints element-->
+	<xsd:complexType name="OpportunityConstraintsType">
+		<xsd:sequence>
+			<xsd:element ref="core:AdType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Ad type fulfillment advisory.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice minOccurs="0">
+				<xsd:sequence>
+					<xsd:element ref="MaxDuration" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Maximum duration for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="MinDuration" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Minimum duration for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="DesiredDuration" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Desired (ideal) duration for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:element ref="core:Duration">
+					<xsd:annotation>
+						<xsd:documentation>Required duration for the sum of related returned placements.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:choice minOccurs="0">
+				<xsd:sequence>
+					<xsd:element ref="MaxPlacementCount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Maximum placement count for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="MinPlacementCount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Minimum placement count for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="DesiredPlacementCount" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Desired (ideal) placement count for the sum of related returned placements.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:element ref="PlacementCount">
+					<xsd:annotation>
+						<xsd:documentation>Required specific placement count for the sum of related returned placements.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element ref="EffectiveStartDateTime" minOccurs="0"/>
+			<xsd:element ref="EffectiveEndDateTime" minOccurs="0"/>
+			<xsd:element ref="Scope" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="OpportunityConstraints" type="OpportunityConstraintsType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunity constraints via a combination of guidance and/or requirements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement element-->
+	<xsd:complexType name="PlacementType">
+		<xsd:sequence>
+			<xsd:element ref="core:Tracking" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="core:Content">
+					<xsd:annotation>
+						<xsd:documentation>Content specifier.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="ContentRotationList">
+					<xsd:annotation>
+						<xsd:documentation>Container for content list used in a placement rotation.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element ref="PlacementConstraints" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="action" type="placementActionAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Specified placement behavior.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="placementControlRef" type="core:idAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Reference to a PlacementControl element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="position" type="positionAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Placement position within this placement decision. Zero indicates unspecified.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="Placement" type="PlacementType">
+		<xsd:annotation>
+			<xsd:documentation>Describes an individual content placement decision including an applicible content binding.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Constraints element-->
+	<xsd:complexType name="PlacementConstraintsType">
+		<xsd:sequence>
+			<xsd:element ref="core:Duration" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Specific run-time length for the content decision. The placement engine shall pad or cut to meet this exact time.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="EffectiveStartDateTime" minOccurs="0"/>
+			<xsd:element ref="EffectiveEndDateTime" minOccurs="0"/>
+			<xsd:element ref="Scope" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="PlacementConstraints" type="PlacementConstraintsType">
+		<xsd:annotation>
+			<xsd:documentation>Placement constraints via a combination of guidance and/or requirements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Control element-->
+	<xsd:complexType name="PlacementControlType">
+		<xsd:sequence>
+			<xsd:element ref="core:Content" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Details about current ad content, if known.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="OpportunityConstraints" minOccurs="0"/>
+			<xsd:element ref="PlacementDateTime" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="action" type="placementActionAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Planned/recommended action.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="position" type="positionAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Position within the placement opportunity. Zero indicates unknown.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="PlacementControl" type="PlacementControlType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunity subdivision. Individual constraints via a combination of guidance and/or requirements.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Count element-->
+	<xsd:element name="PlacementCount" type="PlacementCountType">
+		<xsd:annotation>
+			<xsd:documentation>Specific placement count.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Date Time element-->
+	<xsd:complexType name="PlacementDateTimeType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:dateTimeTimezoneType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementDateTime" type="PlacementDateTimeType">
+		<xsd:annotation>
+			<xsd:documentation>Anticipated/calculated opportunity start date and time based on the entertainment content and the client time.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Decision element-->
+	<xsd:complexType name="PlacementDecisionType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>The PlacementConstraints element applies to the entire PlacementDecision which may be subdivided via the list of Placement elements. Individual placements may be further controlled by their own local PlacementConstraints element.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element ref="Entertainment" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="OpportunityBinding"/>
+				<xsd:element ref="LinearAvailBinding"/>
+			</xsd:choice>
+			<xsd:element ref="PlacementConstraints" minOccurs="0"/>
+			<xsd:element ref="Placement" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="placementOpportunityRef" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Reference associating this PlacementDecision with a PlacementOpportunity element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="localServiceRef" type="localServiceRefAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Reference to a Service element contained locally in the PlacementResponse message.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="PlacementDecision" type="PlacementDecisionType">
+		<xsd:annotation>
+			<xsd:documentation>Individual placement decision description groups.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--PlacmentDecisionOwner element-->
+	<xsd:complexType name="PlacementDecisionOwnerType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementDecisionOwner" type="PlacementDecisionOwnerType">
+		<xsd:annotation>
+			<xsd:documentation>Placement decision owner identifier.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Opportunity element-->
+	<xsd:complexType name="PlacementOpportunityType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>The OpportunityConstraints element applies to the entire PlacementOpportunity which may be subdivided via the list of PlacementControl elements. Individual PlacementControl elements may further specify their own local OpportunityConstraints element which in turn has a more limited and specific scope.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element ref="Entertainment" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="OpportunityBinding"/>
+				<xsd:element ref="LinearAvailBinding"/>
+			</xsd:choice>
+			<xsd:element ref="OpportunityConstraints" minOccurs="0"/>
+			<xsd:element ref="PlacementDateTime" minOccurs="0"/>
+			<xsd:element ref="PlacementControl" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Unique identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="serviceRegistrationRef" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Reference to a specific service registration provided via the ADSRegistrationReguest message's Service element id attribute.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="localServiceRef" type="localServiceRefAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Reference to a Service element contained locally in the PlacementRequest message.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="PlacementOpportunity" type="PlacementOpportunityType">
+		<xsd:annotation>
+			<xsd:documentation>Individual placement opportunity descriptions.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Placement Status Event element-->
+	<xsd:complexType name="PlacementStatusEventType">
+		<xsd:complexContent>
+			<xsd:extension base="EventBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PlacementStatusEvent" type="PlacementStatusEventType">
+		<xsd:annotation>
+			<xsd:documentation>Placement specific event.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--PlayData element -->
+	<xsd:complexType name="PlayDataType">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>These elements apply to all events below. If the element appears here then it should not appear in any named event anywhere below. </xsd:documentation>
+				</xsd:annotation>
+				<xsd:element ref="SystemContext" minOccurs="0"/>
+				<xsd:element ref="Client" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Information reduction by using static entertainment asset and/or static spot event groupings.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element ref="EntertainmentScopedEvents"/>
+				<xsd:element ref="SpotScopedEvents">
+					<xsd:annotation>
+						<xsd:documentation>Events all relative to the static Spot element declaration.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element ref="Events" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="identityADM" type="core:identityAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>ADM identity origin identifier for all events contained within this element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="systemADM" type="core:systemAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Origin identifier for all events contained within this element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="identityADS" type="core:identityAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>ADS identity origin identifier for all events contained within this element.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="eventRangeDateTimeAttrsType"/>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="PlayData" type="PlayDataType">
+		<xsd:annotation>
+			<xsd:documentation>Container for event element groups.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Product Type element-->
+	<xsd:complexType name="ProductTypeType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="ProductType" type="ProductTypeType">
+		<xsd:annotation>
+			<xsd:documentation>Product identification. Examples: MOD, VOD, FOD, etc.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Provider Avail ID element-->
+	<xsd:complexType name="ProviderAvailIDType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="ProviderAvailID" type="ProviderAvailIDType">
+		<xsd:annotation>
+			<xsd:documentation>Provider avail identifier.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Scope element-->
+	<xsd:complexType name="ScopeType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Scope" type="ScopeType">
+		<xsd:annotation>
+			<xsd:documentation>Scope fullfillment advisory. For example: National, Regional, Local, etc.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Service element-->
+	<xsd:complexType name="ServiceType">
+		<xsd:sequence>
+			<xsd:element ref="core:Program" minOccurs="0"/>
+			<xsd:element ref="core:AdType" minOccurs="0"/>
+			<xsd:element ref="ContentProvider" minOccurs="0"/>
+			<xsd:element ref="ProductType" minOccurs="0"/>
+			<xsd:element ref="PlacementDecisionOwner" minOccurs="0"/>
+			<xsd:element ref="Scope" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Service scope.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="core:idAttrType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Service identifier.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="decisionPolicy" type="core:nonEmptyStringType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Overall placement course of action. Examples: preload, default, interactive, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="opportunityType" type="placementOpportunityTypeAttrType" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Placement opportunity type identification. Examples are: pre-roll, post-roll, interstitial, pause, etc.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="Service" type="ServiceType">
+		<xsd:annotation>
+			<xsd:documentation>Information for identifying a placement decision maker.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Service Description element-->
+	<xsd:complexType name="ServiceDescriptionType">
+		<xsd:sequence>
+			<xsd:element ref="SystemContext">
+				<xsd:annotation>
+					<xsd:documentation>Associated service system parameter descripiton for which an ADS provides placement decisions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="Service" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Description of placement services for which an ADS provides placement decisions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="ServiceDescription" type="ServiceDescriptionType">
+		<xsd:annotation>
+			<xsd:documentation>Service specification defined by a system context and a list of services within that context.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Service Group element-->
+	<xsd:complexType name="ServiceGroupType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="ServiceGroup" type="ServiceGroupType">
+		<xsd:annotation>
+			<xsd:documentation>Service group identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Session element-->
+	<xsd:complexType name="SessionType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Session" type="SessionType">
+		<xsd:annotation>
+			<xsd:documentation>Session identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Session Event element-->
+	<xsd:complexType name="SessionEventType">
+		<xsd:complexContent>
+			<xsd:extension base="EventBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="SessionEvent" type="SessionEventType">
+		<xsd:annotation>
+			<xsd:documentation>Event organized and identified based on some determined criteria.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Spot element-->
+	<xsd:complexType name="SpotType">
+		<xsd:sequence>
+			<xsd:element ref="core:Tracking" minOccurs="0"/>
+			<xsd:element ref="core:Content"/>
+			<xsd:element ref="SpotNPT" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>NPT specific to the core:Content element above.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any"/>
+	</xsd:complexType>
+	<xsd:element name="Spot" type="SpotType">
+		<xsd:annotation>
+			<xsd:documentation>Ad spot identification.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--SpotNPT element-->
+	<xsd:element name="SpotNPT" type="NormalPlayTimeType">
+		<xsd:annotation>
+			<xsd:documentation>NPT scoped by (relative to) a declared Spot element.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--SpotScopedEvents element-->
+	<xsd:complexType name="SpotScopedEventsType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>The Spot element applies to all events in the Events element and the Spot element shall not appear in any named event within the Events element</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element ref="Spot"/>
+			<xsd:element ref="Events"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="eventRangeDateTimeAttrsType"/>
+		<xsd:anyAttribute namespace="##any"/>
+	</xsd:complexType>
+	<xsd:element name="SpotScopedEvents" type="SpotScopedEventsType">
+		<xsd:annotation>
+			<xsd:documentation>Events all relative to the static Spot element declaration.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--System Context element-->
+	<xsd:complexType name="SystemContextType">
+		<xsd:sequence>
+			<xsd:element ref="ServiceGroup" minOccurs="0"/>
+			<xsd:element ref="Network" minOccurs="0"/>
+			<xsd:element ref="Channel" minOccurs="0"/>
+			<xsd:element ref="Zone" minOccurs="0"/>
+			<xsd:element ref="Session" minOccurs="0"/>
+			<xsd:element ref="core:Ext" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="SystemContext" type="SystemContextType">
+		<xsd:annotation>
+			<xsd:documentation>General system information.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--System Event element-->
+	<xsd:complexType name="SystemEventType">
+		<xsd:complexContent>
+			<xsd:extension base="EventBaseType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="SystemEvent" type="SystemEventType">
+		<xsd:annotation>
+			<xsd:documentation>Generic event container.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Targeting/Addressable Criteria element-->
+	<xsd:element name="TargetCode">
+		<xsd:annotation>
+			<xsd:documentation>Addressable/target criteria element.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType mixed="true">
+			<xsd:complexContent mixed="true">
+				<xsd:extension base="xsd:anyType">
+					<xsd:attribute name="key" type="core:nonEmptyStringType" use="required">
+						<xsd:annotation>
+							<xsd:documentation>Name of key in key/value pair.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!--Terminal Address element-->
+	<xsd:complexType name="TerminalAddressType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:attribute name="type" type="core:nonEmptyStringType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Terminal endpoint type identification. Examples are: IP, MAC, etc.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="TerminalAddress" type="TerminalAddressType">
+		<xsd:annotation>
+			<xsd:documentation>Client/subscriber/target endpoint identification. Transport specfic.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Viewer Event element-->
+	<xsd:complexType name="ViewerEventType">
+		<xsd:complexContent>
+			<xsd:extension base="EventBaseType">
+				<xsd:attribute name="eventSource" type="core:nonEmptyStringType" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Event generation source. Examples include: remote, software, etc.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ViewerEvent" type="ViewerEventType">
+		<xsd:annotation>
+			<xsd:documentation>Client/end-user/on-screen event.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Window element-->
+	<xsd:complexType name="WindowType">
+		<xsd:attribute name="start" type="core:dateTimeTimezoneType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Window start date and time.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="end" type="core:dateTimeTimezoneType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Window end date and time.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:element name="Window" type="WindowType">
+		<xsd:annotation>
+			<xsd:documentation>Placement opportunity scheduled time range.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--Zone element-->
+	<xsd:complexType name="ZoneType">
+		<xsd:simpleContent>
+			<xsd:extension base="core:nonEmptyStringType">
+				<xsd:anyAttribute namespace="##any" processContents="lax"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Zone" type="ZoneType">
+		<xsd:annotation>
+			<xsd:documentation>Zone identifier.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!---->
+	<!---->
+</xsd:schema>

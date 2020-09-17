@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jersey="http://www.mulesoft.org/schema/mule/jersey" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="CE-3.2.1" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd 
+http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/jersey/current/mule-jersey.xsd 
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd 
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd ">
+    <spring:beans>
+        <spring:bean name="cpp_schedule_loading_job" class="tv.blackarrow.cpp.quartz.ScheduleLoadingJob" doc:name="Bean"/>
+        <spring:bean name="cpp_po_data_file_handling_job" class="tv.blackarrow.cpp.quartz.PODataFileHandlingJob" doc:name="Bean"/>
+        <spring:bean name="cpp_schedule_purger_job" class="tv.blackarrow.cpp.quartz.SchedulePurgerJob" doc:name="Bean"/>
+        <spring:bean name="init" class="tv.blackarrow.cpp.setting.BootStrap" doc:name="Bean"/>
+    </spring:beans>
+    <flow name="updateWindowFlow" doc:name="updateWindowFlow" processingStrategy="synchronous">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="out" responseTimeout="10000" mimeType="text/plain" doc:name="VM"/>
+        <component class="tv.blackarrow.cpp.components.ConfirmedPoCheckComponent" doc:name="confirmed PO"/>
+        <choice doc:name="Choice">
+            <when expression="signal_id=" evaluator="header">
+                <processor-chain>
+                    <component class="tv.blackarrow.cpp.components.UpdateWindowComponent" doc:name="update unconfimed"/>
+                    <component class="tv.blackarrow.cpp.components.NotifyConfirmedPosComponent" doc:name="notify CPA of confirmed placements"/>
+                </processor-chain>
+            </when>
+            <otherwise>
+                <processor-chain>
+                    <logger level="INFO" doc:name="Logger"/>
+                </processor-chain>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="PODataFileHandlingCronJob" doc:name="PODataFileHandlingCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="PODataFileHandlingCronJob" cronExpression="0 * * * * ?" repeatInterval="0" repeatCount="-1" startDelay="60000" doc:name="poDataFileHandlingQuartz">
+            <quartz:custom-job job-ref="cpp_po_data_file_handling_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="ScheduleLoaderCronJob" doc:name="ScheduleLoaderCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="ScheduleLoaderCronJob" cronExpression="15 45 * * * ?" repeatInterval="0" repeatCount="-1" startDelay="60000" doc:name="scheduleLoadingQuartz">
+            <quartz:custom-job job-ref="cpp_schedule_loading_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="SchedulePurgerCronJob" doc:name="SchedulePurgerCronJob" processingStrategy="synchronous">
+        <quartz:inbound-endpoint jobName="SchedulePurgerCronJob" cronExpression="15 15 * * * ?" repeatInterval="0" repeatCount="-1" startDelay="60000" doc:name="schedulePurgerQuartz">
+            <quartz:custom-job job-ref="cpp_schedule_purger_job"/>
+        </quartz:inbound-endpoint>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <flow name="signal_event_flow" doc:name="signal_event_flow">
+        <http:inbound-endpoint name="sccInbound" exchange-pattern="request-response" host="localhost" port="${port1}" path="scc/signal" doc:name="HTTP"/>
+        <component class="tv.blackarrow.cpp.components.SCCRequestComponent" doc:name="SCC Request"/>
+        <component class="tv.blackarrow.cpp.components.POISDecisionComponent" doc:name="POIS Decision"/>
+        <component class="tv.blackarrow.cpp.components.UpdateADSComponent" doc:name="Update ADS"/>
+        <component class="tv.blackarrow.cpp.components.SCCResponseComponent" doc:name="SCC Response"/>
+    </flow>
+    <flow name="manifest_signal_event_flow" doc:name="manifest_signal_event_flow">
+        <http:inbound-endpoint name="mccInbound" exchange-pattern="request-response" host="localhost" port="${port2}" path="mcc/signal" doc:name="HTTP"/>
+        <component class="tv.blackarrow.cpp.components.mcc.ManifestlEventComponent" doc:name="Manifest Event"/>
+    </flow>
+    <flow name="admin_flow" doc:name="admin_flow">
+        <http:inbound-endpoint name="adminInbound" exchange-pattern="request-response" host="localhost" port="${port3}" path="admin" doc:name="HTTP"/>
+        <component class="tv.blackarrow.cpp.components.AdminComponent" doc:name="Admin Service"/>
+    </flow>
+</mule>

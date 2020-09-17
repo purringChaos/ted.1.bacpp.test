@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SignalProcessingEvent 
+	xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2">
+	<AcquiredSignal acquisitionPointIdentity="ACQUISITION_POINT"
+		acquisitionSignalID="4702e8b4-277f-499e-820f-82344b4fefd9"
+		acquisitionTime="2012-09-08T23:50:56Z">
+		<sig:UTCPoint utcPoint="CURRENT_TIME" />
+		<sig:SCTE35PointDescriptor
+			spliceCommandType="6">
+			<sig:SegmentationDescriptorInfo
+				segmentEventID="99790150" upidType="9"
+				upid="34285973945692837590283759824753692835792835982349238462342522"
+				segmentTypeId="52" segmentNum="0" segmentsExpected="0" duration="PT1M0S" />
+		</sig:SCTE35PointDescriptor>
+		<sig:StreamTimes>
+			<sig:StreamTime timeType="PTS" timeValue="222222222" />
+		</sig:StreamTimes>
+	</AcquiredSignal>
+</SignalProcessingEvent> 

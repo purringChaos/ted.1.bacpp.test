@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns="http://www.scte.org/schemas/130-3/2008a/adm/podm" 
+	xmlns:gis="http://www.scte.org/schemas/130-8/2010a/gis" 
+	targetNamespace="http://www.scte.org/schemas/130-3/2008a/adm/podm" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<!-- -->
+	<xsd:import namespace="http://www.scte.org/schemas/130-8/2010a/gis" schemaLocation="SCTE_130-8_2010a.xsd"/>
+	<!---->
+	<!---->
+	<xsd:include schemaLocation="SCTE_130-3_2010_podm.xsd"/>
+	<!---->
+	<!---->
+	<xsd:complexType name="PODMBasicQueryResultType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:BasicQueryResultAbstractType">
+				<xsd:choice>
+					<xsd:element ref="gis:UniqueQualifier" maxOccurs="unbounded"/>
+					<xsd:element ref="PlacementOpportunityV2" maxOccurs="unbounded"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="PODMBasicQueryResult" type="PODMBasicQueryResultType" substitutionGroup="gis:BasicQueryResultAbstract"/>
+	<!---->
+	<!---->
+</xsd:schema>

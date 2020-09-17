@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+ other than 5 and 6  splice command types are unsupported values
+ -->
+<SignalProcessingEvent
+	xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2">
+	<AcquiredSignal acquisitionPointIdentity="ACQUISITION_POINT"
+		acquisitionSignalID="4A6A94EE-62FA-11E1-B1CA-882F4824019C"
+		acquisitionTime="2012-09-18T10:14:26Z">
+		<sig:UTCPoint utcPoint="CURRENT_TIME" />
+		<sig:SCTE35PointDescriptor
+			spliceCommandType="9">
+			<sig:SpliceInsert spliceEventID="344568691"
+				outOfNetworkIndicator="true" uniqueProgramID="55355" duration="PT1M0S"
+				spliceEventCancelIndicator="true" />
+		</sig:SCTE35PointDescriptor>
+		<sig:StreamTimes>
+			<sig:StreamTime timeType="PTS" timeValue="4452723280" />
+		</sig:StreamTimes>
+	</AcquiredSignal>
+</SignalProcessingEvent>

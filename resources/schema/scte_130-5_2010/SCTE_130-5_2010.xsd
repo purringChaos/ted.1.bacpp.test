@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.scte.org/schemas/130-5/2010/pois" xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" xmlns:gis="http://www.scte.org/schemas/130-8/2010a/gis"  targetNamespace="http://www.scte.org/schemas/130-5/2010/pois" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--m-->
+	<xsd:import namespace="http://www.scte.org/schemas/130-2/2008a/core" schemaLocation="SCTE_130-2_2008a.xsd"/>
+	<xsd:import namespace="http://www.scte.org/schemas/130-8/2010a/gis" schemaLocation="SCTE_130-8_2010a.xsd"/>
+	
+	<xsd:import namespace="http://www.scte.org/schemas/130-3/2008a/adm/podm" schemaLocation="SCTE_130-3_2010_podm_query.xsd"/>
+	<!-- Query -->
+	<xsd:element name="POISQueryRequest" type="POISQueryRequestType"/>
+	<xsd:element name="POISQueryResponse" type="POISQueryResponseType"/>
+	<!-- Cursor Related Messasges -->
+	<xsd:element name="POISCreateCursorRequest" type="POISCreateCursorRequestType"/>
+	<xsd:element name="POISCreateCursorResponse" type="POISCreateCursorResponseType"/>
+	<xsd:element name="POISCancelCursorRequest" type="POISCancelCursorRequestType"/>
+	<xsd:element name="POISCancelCursorResponse" type="POISCancelCursorResponseType"/>
+	<!-- Registration, Deregister/Deregistration, and List Messages -->
+	<xsd:element name="POISNotificationRegistrationRequest" type="POISNotificationRegistrationRequestType"/>
+	<xsd:element name="POISNotificationRegistrationResponse" type="POISNotificationRegistrationResponseType"/>
+	<xsd:element name="POISNotificationDeregisterRequest" type="POISNotificationDeregisterRequestType"/>
+	<xsd:element name="POISNotificationDeregisterResponse" type="POISNotificationDeregisterResponseType"/>
+	<xsd:element name="POISListNotificationRegistrationRequest" type="POISListNotificationRegistrationRequestType"/>
+	<xsd:element name="POISListNotificationRegistrationResponse" type="POISListNotificationRegistrationResponseType"/>
+	<xsd:element name="POISDeregistrationNotification" type="POISDeregistrationNotificationType"/>
+	<xsd:element name="POISDeregistrationAcknowledgement" type="POISDeregistrationAcknowledgementType"/>
+	<!-- Notification -->
+	<xsd:element name="POISNotification" type="POISNotificationType"/>
+	<xsd:element name="POISNotificationAcknowledgement" type="POISNotificationAcknowledgementType"/>
+	<!-- Supported Features -->
+	<xsd:element name="POISListSupportedFeaturesRequest" type="POISListSupportedFeaturesRequestType"/>
+	<xsd:element name="POISListSupportedFeaturesResponse" type="POISListSupportedFeaturesResponseType"/>
+	<xsd:element name="POISListQualifiersRequest" type="POISListQualifiersRequestType"/>
+	<xsd:element name="POISListQualifiersResponse" type="POISListQualifiersResponseType"/>
+	<!-- =================================== -->
+	<!-- POISListSupportedFeaturesRequestType -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISListSupportedFeaturesRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListSupportedFeaturesRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISListSupportedFeaturesResponseType    -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISListSupportedFeaturesResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListSupportedFeaturesResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ====================================== -->
+	<!-- POISNotificationRegistrationRequestType -->
+	<!-- ====================================== -->
+	<xsd:complexType name="POISNotificationRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationRegistrationRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISNotificationRegistrationResponseType -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISNotificationRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationRegistrationResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ========================================== -->
+	<!-- POISListNotificationRegistrationRequestType -->
+	<!-- ========================================== -->
+	<xsd:complexType name="POISListNotificationRegistrationRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListNotificationRegistrationRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =========================================== -->
+	<!-- POISListNotificationRegistrationResponseType -->
+	<!-- =========================================== -->
+	<xsd:complexType name="POISListNotificationRegistrationResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListNotificationRegistrationResponseType">
+				<xsd:sequence>
+					<xsd:element ref="POISNotificationRegistrationRequest" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ==================================== -->
+	<!-- POISNotificationDeregisterRequestType -->
+	<!-- ==================================== -->
+	<xsd:complexType name="POISNotificationDeregisterRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationDeregisterRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISNotificationDeregisterResponseType   -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISNotificationDeregisterResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationDeregisterResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISQueryRequestType                 -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISQueryRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:QueryRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISQueryResponseType                    -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISQueryResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:QueryResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISCreateCursorRequestType          -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISCreateCursorRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:CreateCursorRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISCreateCursorResponseType             -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISCreateCursorResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:CreateCursorResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISCancelCursorRequestType          -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISCancelCursorRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:CancelCursorRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISCancelCursorResponseType             -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISCancelCursorResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:CancelCursorResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISListQualifiersRequestType        -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISListQualifiersRequestType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListQualifiersRequestType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISListQualifiersResponseType           -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISListQualifiersResponseType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:ListQualifiersResponseType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISDeregistrationNotificationType   -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISDeregistrationNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:DeregistrationNotificationType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISDeregistrationAcknowledgementType    -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISDeregistrationAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:DeregistrationAcknowledgementType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- =================================== -->
+	<!-- POISNotificationType                 -->
+	<!-- =================================== -->
+	<xsd:complexType name="POISNotificationType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ======================================= -->
+	<!-- POISNotificationAcknowledgementType      -->
+	<!-- ======================================= -->
+	<xsd:complexType name="POISNotificationAcknowledgementType">
+		<xsd:complexContent>
+			<xsd:extension base="gis:NotificationAcknowledgementType">
+				<xsd:sequence>
+					<xsd:element ref="core:Ext" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

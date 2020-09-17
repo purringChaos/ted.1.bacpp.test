@@ -1,0 +1,18 @@
+<cache>
+  <entry>
+    <string>feed001</string>
+    <cache>
+      <entry>
+        <string>schedule001</string>
+        <tv.blackarrow.cpp.po.PoSchedule>
+          <feedId>feed001</feedId>
+          <scheduleId>schedule001</scheduleId>
+          <networkNumber>network001</networkNumber>
+          <zoneNumber>zone001</zoneNumber>
+          <scheduleDate>2022-01-01 10:00:00.0 PST</scheduleDate>
+          <windows/>
+        </tv.blackarrow.cpp.po.PoSchedule>
+      </entry>
+    </cache>
+  </entry>
+</cache>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================================== -->
+<!-- -->
+<!-- Log4j2 Configuration -->
+<!-- -->
+<!-- ===================================================================== -->
+
+<Configuration status="WARN" name="bacpp" packages="tv.blackarrow.cpp.utils" verbose="false">
+	<Appenders>
+
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout pattern="%m%n" />
+		</Console>
+		<!-- A size based file rolling appender -->
+		<RollingRandomAccessFile ignoreExceptions="false"
+			name="audit" fileName="/opt/blackarrow/ess/audit/ba_audit_linear_pois.log"
+			filePattern="/opt/blackarrow/ess/audit/waiting/1_1_%i_ba_audit_linear_pois.log.gz">
+			<PatternLayout>
+				<Pattern>%m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeSizeTriggerBasedRollingPolicy
+					MaxFileSize="10240000" MaxTimeSecs="3600" />
+			</Policies>
+		</RollingRandomAccessFile>
+
+		 <RollingRandomAccessFile ignoreExceptions="false"
+			name="cpp" fileName="/opt/blackarrow/ess/log/cpp.log"
+			filePattern="/opt/blackarrow/ess/log/cpp.log.%i">
+			<PatternLayout>
+				<Pattern>%d %5p %c{1}:%L - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10240000" />
+			</Policies>
+			<DefaultRolloverStrategy max="2400" />
+		</RollingRandomAccessFile>
+
+		<RollingRandomAccessFile ignoreExceptions="false"
+			name="message" fileName="/opt/blackarrow/ess/audit/ba_audit_linear_pois_message.log"
+			filePattern="/opt/blackarrow/ess/audit/waiting/1_1_%i_ba_audit_linear_pois_message.log.gz">
+			<PatternLayout>
+				<Pattern>%m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeSizeTriggerBasedRollingPolicy
+					MaxFileSize="10240000" MaxTimeSecs="3600" />
+			</Policies>
+		</RollingRandomAccessFile>		
+	<RollingRandomAccessFile
+		ignoreExceptions="false" name="normalize"
+		fileName="/opt/blackarrow/ess/audit/ba_audit_normalize_message.log"
+		filePattern="/opt/blackarrow/ess/audit/waiting/1_1_%i_ba_audit_normalize_message.log.gz">
+		<PatternLayout>
+			<Pattern>%m%n</Pattern>
+		</PatternLayout>
+		<Policies>
+			<TimeSizeTriggerBasedRollingPolicy
+				MaxFileSize="10240000" MaxTimeSecs="3600" />
+		</Policies>
+	</RollingRandomAccessFile>
+	<RollingRandomAccessFile
+		ignoreExceptions="false" name="pretrigger"
+		fileName="/opt/blackarrow/ess/audit/ba_audit_pretrigger_message.log"
+		filePattern="/opt/blackarrow/ess/audit/waiting/1_1_%i_ba_audit_pretrigger_message.log.gz">
+		<PatternLayout>
+			<Pattern>%m%n</Pattern>
+		</PatternLayout>
+		<Policies>
+			<TimeSizeTriggerBasedRollingPolicy
+				MaxFileSize="10240000" MaxTimeSecs="3600" />
+		</Policies>
+	</RollingRandomAccessFile>		
+
+		<Async name="ASYNC" bufferSize="2000" includeLocation="true">
+			<AppenderRef ref="cpp" />
+		</Async>
+		
+	</Appenders>
+
+	<!-- log4j2 Logger Configuration -->
+	<Loggers>
+
+		<Logger additivity="false" name="AuditLog" level="INFO">
+			<AppenderRef ref="audit" />
+		</Logger>
+
+		<Logger additivity="false" name="MessageLog" level="INFO">
+			<AppenderRef ref="message" />
+		</Logger>
+
+		<Logger additivity="false" name="PretriggerLog" level="INFO">
+			<AppenderRef ref="pretrigger" />
+		</Logger>
+		<Logger additivity="false" name="NormalizeLog" level="INFO">
+			<AppenderRef ref="normalize" />
+		</Logger>
+		
+		<Logger name="org.apache" level="WARN">
+		</Logger>
+
+		<Logger name="org.apache.cxf" level="WARN">
+		</Logger>		
+
+		<!-- 
+		
+		<Logger name="tv.blackarrow.cpp.service.BlackoutNotificationServiceImpl" additivity="false" level="INFO">
+              <AppenderRef ref="ASYNC" />
+        </Logger>
+
+        <Logger name="tv.blackarrow.cpp.components.scte224.esni2015.notifications.AcquisitionPointNotificationService" additivity="false" level="INFO">
+              <AppenderRef ref="ASYNC" />
+        </Logger>
+        -->	
+
+		<Logger name="tv.blackarrow" additivity="false" level="INFO">
+			<AppenderRef ref="ASYNC" />
+		</Logger>
+		<logger name="tv.blackarrow.cpp.pretrigger" additivity="false" level="DEBUG">
+			<appender-ref ref="ASYNC"/>
+		</logger>
+		<Logger name="com.couchbase" additivity="false" level="WARN">
+			<AppenderRef ref="ASYNC" />
+		</Logger>
+		<Logger name="org.springframework" additivity="false" level="WARN">
+			<AppenderRef ref="ASYNC" />
+		</Logger>
+		<Root level="WARN" />
+	</Loggers>
+</Configuration>

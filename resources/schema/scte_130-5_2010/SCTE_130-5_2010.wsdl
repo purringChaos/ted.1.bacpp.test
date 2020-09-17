@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="POIS" 
+ targetNamespace="http://www.scte.org/wsdl/130-5/2010/pois" 
+ xmlns:tns="http://www.scte.org/wsdl/130-5/2010/pois" 
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+ xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+ xmlns:pois="http://www.scte.org/schemas/130-5/2010/pois" 
+ xmlns:core="http://www.scte.org/schemas/130-2/2008a/core" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.scte.org/schemas/130-5/2010/pois SCTE_130-5_2010.xsd">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.scte.org/wsdl/130-5/2010/pois" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+			<xs:import namespace="http://www.scte.org/schemas/130-5/2010/pois" schemaLocation="SCTE_130-5_2010.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	
+	<!-- POISClient Message Types -->
+	<wsdl:message name="POISNotification">
+		<wsdl:part name="request" element="pois:POISNotification"/>
+
+	</wsdl:message>
+	<wsdl:message name="POISNotificationAcknowledgement">
+		<wsdl:part name="response" element="pois:POISNotificationAcknowledgement"/>
+	</wsdl:message>
+	<wsdl:message name="POISDeregistrationNotification">
+		<wsdl:part name="request" element="pois:POISDeregistrationNotification"/>
+	</wsdl:message>
+	<wsdl:message name="POISDeregistrationAcknowledgement">
+		<wsdl:part name="response" element="pois:POISDeregistrationAcknowledgement"/>
+
+	</wsdl:message>
+	
+	<!-- Common POIS Client/Server Message Types -->
+	<wsdl:message name="ServiceCheckRequest">
+		<wsdl:part name="request" element="core:ServiceCheckRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ServiceCheckResponse">
+		<wsdl:part name="response" element="core:ServiceCheckResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ServiceStatusNotification">
+
+		<wsdl:part name="request" element="core:ServiceStatusNotification"/>
+	</wsdl:message>
+	<wsdl:message name="ServiceStatusAcknowledgement">
+		<wsdl:part name="response" element="core:ServiceStatusAcknowledgement"/>
+	</wsdl:message>
+	
+	<!--  POIS Server Message Types -->
+	<wsdl:message name="POISListSupportedFeaturesRequest">
+		<wsdl:part name="request" element="pois:POISListSupportedFeaturesRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="POISListSupportedFeaturesResponse">
+		<wsdl:part name="response" element="pois:POISListSupportedFeaturesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="POISListQualifiersRequest">
+		<wsdl:part name="request" element="pois:POISListQualifiersRequest"/>
+	</wsdl:message>
+	<wsdl:message name="POISListQualifiersResponse">
+		<wsdl:part name="response" element="pois:POISListQualifiersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="POISQueryRequest">
+		<wsdl:part name="request" element="pois:POISQueryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="POISQueryResponse">
+		<wsdl:part name="response" element="pois:POISQueryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="POISNotificationRegistrationRequest">
+		<wsdl:part name="request" element="pois:POISNotificationRegistrationRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="POISNotificationRegistrationResponse">
+		<wsdl:part name="response" element="pois:POISNotificationRegistrationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="POISNotificationDeregisterRequest">
+		<wsdl:part name="request" element="pois:POISNotificationDeregisterRequest"/>
+	</wsdl:message>
+	<wsdl:message name="POISNotificationDeregisterResponse">
+		<wsdl:part name="response" element="pois:POISNotificationDeregisterResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="POISListNotificationRegistrationRequest">
+		<wsdl:part name="request" element="pois:POISListNotificationRegistrationRequest"/>
+	</wsdl:message>
+	<wsdl:message name="POISListNotificationRegistrationResponse">
+		<wsdl:part name="response" element="pois:POISListNotificationRegistrationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="POISCreateCursorRequest">
+		<wsdl:part name="request" element="pois:POISCreateCursorRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="POISCreateCursorResponse">
+		<wsdl:part name="response" element="pois:POISCreateCursorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="POISCancelCursorRequest">
+		<wsdl:part name="request" element="pois:POISCancelCursorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="POISCancelCursorResponse">
+		<wsdl:part name="response" element="pois:POISCancelCursorResponse"/>
+	</wsdl:message>
+
+	
+	<wsdl:portType name="POISClient">
+		<wsdl:operation name="POISNotification">
+			<wsdl:input message="tns:POISNotification"/>
+			<wsdl:output message="tns:POISNotificationAcknowledgement"/>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceCheckRequest">
+			<wsdl:input message="tns:ServiceCheckRequest"/>
+			<wsdl:output message="tns:ServiceCheckResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="ServiceStatusNotification">
+			<wsdl:input message="tns:ServiceStatusNotification"/>
+			<wsdl:output message="tns:ServiceStatusAcknowledgement"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISDeregistrationNotification">
+			<wsdl:input message="tns:POISDeregistrationNotification"/>
+			<wsdl:output message="tns:POISDeregistrationAcknowledgement"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	
+	<wsdl:portType name="POISServer">
+		<wsdl:operation name="ServiceCheckRequest">
+			<wsdl:input message="tns:ServiceCheckRequest"/>
+			<wsdl:output message="tns:ServiceCheckResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceStatusNotification">
+			<wsdl:input message="tns:ServiceStatusNotification"/>
+			<wsdl:output message="tns:ServiceStatusAcknowledgement"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="POISListSupportedFeaturesRequest">
+			<wsdl:input message="tns:POISListSupportedFeaturesRequest"/>
+			<wsdl:output message="tns:POISListSupportedFeaturesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISListQualifiersRequest">
+			<wsdl:input message="tns:POISListQualifiersRequest"/>
+			<wsdl:output message="tns:POISListQualifiersResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISListNotificationRegistrationRequest">
+
+			<wsdl:input message="tns:POISListNotificationRegistrationRequest"/>
+			<wsdl:output message="tns:POISListNotificationRegistrationResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationRegistrationRequest">
+			<wsdl:input message="tns:POISNotificationRegistrationRequest"/>
+			<wsdl:output message="tns:POISNotificationRegistrationResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISQueryRequest">
+			<wsdl:input message="tns:POISQueryRequest"/>
+
+			<wsdl:output message="tns:POISQueryResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISCreateCursorRequest">
+			<wsdl:input message="tns:POISCreateCursorRequest"/>
+			<wsdl:output message="tns:POISCreateCursorResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="POISCancelCursorRequest">
+			<wsdl:input message="tns:POISCancelCursorRequest"/>
+			<wsdl:output message="tns:POISCancelCursorResponse"/>
+
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationDeregisterRequest">
+			<wsdl:input message="tns:POISNotificationDeregisterRequest"/>
+			<wsdl:output message="tns:POISNotificationDeregisterResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="POISClientBinding" type="tns:POISClient">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="POISNotification">
+
+			<soap:operation soapAction="POISNotification"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceCheckRequest">
+
+			<soap:operation soapAction="ServiceCheckRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceStatusNotification">
+
+			<soap:operation soapAction="ServiceStatusNotification"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISDeregistrationNotification">
+
+			<soap:operation soapAction="POISDeregistrationNotification"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	
+	<wsdl:binding name="POISServerBindingSOAP" type="tns:POISServer">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="ServiceCheckRequest">
+			<soap:operation soapAction="ServiceCheckRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceStatusNotification">
+			<soap:operation soapAction="ServiceStatusNotification"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListSupportedFeaturesRequest">
+			<soap:operation soapAction="POISListSupportedFeaturesRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListQualifiersRequest">
+			<soap:operation soapAction="POISListQualifiersRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListNotificationRegistrationRequest">
+			<soap:operation soapAction="POISLlistNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationRegistrationRequest">
+			<soap:operation soapAction="POISNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISQueryRequest">
+			<soap:operation soapAction="POISQueryRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCreateCursorRequest">
+			<soap:operation soapAction="POISCreateCursorRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCancelCursorRequest">
+			<soap:operation soapAction="POISCancelCursorRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationDeregisterRequest">
+			<soap:operation soapAction="POISNotificationDeregisterRequest"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:binding name="POISServerBindingSOAP12" type="tns:POISServer">
+		<soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="ServiceCheckRequest">
+			<soap12:operation soapAction="ServiceCheckRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceStatusNotification">
+			<soap12:operation soapAction="ServiceStatusNotification"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListSupportedFeaturesRequest">
+			<soap12:operation soapAction="POISListSupportedFeaturesRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListQualifiersRequest">
+			<soap12:operation soapAction="POISListQualifiersRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListNotificationRegistrationRequest">
+			<soap12:operation soapAction="POISLlistNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationRegistrationRequest">
+			<soap12:operation soapAction="POISNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISQueryRequest">
+			<soap12:operation soapAction="POISQueryRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCreateCursorRequest">
+			<soap12:operation soapAction="POISCreateCursorRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCancelCursorRequest">
+			<soap12:operation soapAction="POISCancelCursorRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationDeregisterRequest">
+			<soap12:operation soapAction="POISNotificationDeregisterRequest"/>
+			<wsdl:input>
+				<soap12:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal"/>
+
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="POISServerBindingHTTP" type="tns:POISServer">
+		<http:binding verb="POST" />
+		<wsdl:operation name="ServiceCheckRequest">
+			<http:operation location="ServiceCheckRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ServiceStatusNotification">
+			<http:operation location="ServiceStatusNotification"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListSupportedFeaturesRequest">
+			<http:operation location="POISListSupportedFeaturesRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListQualifiersRequest">
+			<http:operation location="POISListQualifiersRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />	
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISListNotificationRegistrationRequest">
+			<http:operation location="POISLlistNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationRegistrationRequest">
+			<http:operation location="POISNotificationRegistrationRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISQueryRequest">
+			<http:operation location="POISQueryRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCreateCursorRequest">
+			<http:operation location="POISCreateCursorRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISCancelCursorRequest">
+			<http:operation location="POISCancelCursorRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="POISNotificationDeregisterRequest">
+			<http:operation location="POISNotificationDeregisterRequest"/>
+			<wsdl:input>
+				<mime:content part="request" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="response" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="POISClientService">
+		<wsdl:port name="POISClientPort" binding="tns:POISClientBinding">
+			<soap:address location="http://localhost:8380/bapois/pois/scte130_5_2010/client"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+	<wsdl:service name="POISServerService">
+		<wsdl:port name="POISPortSoap" binding="tns:POISServerBindingSOAP">
+			<soap:address location="http://localhost:8380/bapois/pois/scte130_5_2010/soap"/>
+		</wsdl:port>
+		
+		<wsdl:port name="POISPortSoap12" binding="tns:POISServerBindingSOAP12">
+			<soap12:address location="http://localhost:8380/bapois/pois/scte130_5_2010/soap12"/>
+		</wsdl:port>
+		<wsdl:port name="POISPortHttp" binding="tns:POISServerBindingHTTP">
+			<http:address location="http://localhost:8380/bapois/pois/scte130_5_2010/http"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

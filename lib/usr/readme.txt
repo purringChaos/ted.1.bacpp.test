@@ -1,0 +1,1 @@
+put here any jars that DONT get packaged with binaries, but are used in dev

@@ -1,0 +1,5 @@
+package tv.blackarrow.cpp.utils;
+
+public enum SCTE224EventAction {
+	CREATE, UPDATE, STOP_NOW, COMPLETE, DELETE, BLACKOUT_OVERRIDE, PROGRAM_RUNOVER_UPPLANNED, CONFIRMED, ERROR ;
+}

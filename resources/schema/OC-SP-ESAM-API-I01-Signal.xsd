@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/2"
+	xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+	xmlns="urn:cablelabs:iptvservices:esam:xsd:signal:1"
+	targetNamespace="urn:cablelabs:iptvservices:esam:xsd:signal:1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>
+				<b>Copyright (c)2012, Cable Television Laboratories, Inc.</b>
+				<b>ESAM Signal XML Schema, Release Version I01</b>
+				<b>Real-time Event Signaling and Management API</b>
+				<b>This schema is a normative component of CableLabs® Real-time Event
+					Signaling and Management API Specification,
+					OC-SP-ESAM-API-I01-120910</b>
+			</p>
+			<p>
+				Note the imports below normatively reference the latest Metadata 3.0 EC's.
+				The latest EC versions of the referenced Metadata 3.0 schemas as of the time
+				of publication of ESAM are included with ESAM 1.0 for convenience, but the
+				normative versions apply if there is any subsequent EC or any other discrepancy.
+			</p>
+		</xsd:documentation>
+	</xsd:annotation>
+		
+	<xsd:import namespace="http://www.cablelabs.com/namespaces/metadata/xsd/core/2"
+		schemaLocation="MD-SP-CORE-EC0089.xsd"/>
+	<xsd:import namespace="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2"
+		schemaLocation="MD-SP-SIGNALING-EC0089.xsd"/>
+	<!--                                                 -->
+	<!-- Event containers                        -->
+	<!-- Submit signal(s) for processing    -->
+	<xsd:element name="SignalProcessingEvent" type="SignalProcessingEventType">
+		<xsd:annotation>
+			<xsd:documentation>Container for forwarding one or more signals to a confirmation endpoint. </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- Return message on processing of signal(s) -->
+	<xsd:element name="SignalProcessingNotification" type="SignalProcessingNotificationType">
+		<xsd:annotation>
+			<xsd:documentation>Container for passing signal processing instructions to a conditioning end point. Typically, such instructions are sent in response to a SignalProcessingEvent set a confirmation endpoint.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--                        -->
+	<!-- Complex types -->
+	<!--                        -->
+	<!-- Conditioning Info Type - conditioning information (ex. adaptive bit rate) -->
+	<!--                        -->
+	<xsd:complexType name="ConditioningInfoType">
+		<xsd:annotation>
+			<xsd:documentation>Conditioning Into Type - Conditioning information communicated to an acquisition point. For example, communicate ABR (Adaptive Bit Rate) information.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Segment" minOccurs="0" maxOccurs="unbounded" type="xsd:duration"> </xsd:element>
+			<xsd:element name="Ext" type="core:ExtType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="duration" type="xsd:duration"/>
+		<xsd:attribute name="acquisitionSignalIDRef" type="sig:AcquisitionSignalIDType"
+			use="required">
+			<xsd:annotation>
+				<xsd:documentation>A globally unique ID for the point referenced.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="startOffset" type="xsd:duration" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Specifies a desired off-set start time for the scheduled signal.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!---->
+	<!--Signal Processing Event Type -  Type to carry one or more signals across an interface-->
+	<!---->
+	<xsd:complexType name="SignalProcessingEventType">
+		<xsd:annotation>
+			<xsd:documentation>Signal Processing Event Type - Type to carry one or more acquired signals across an interface</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="AcquiredSignal" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Container for passing a signal from an acquisition point.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="sig:AcquisitionPointInfoType"/>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Ext" type="core:ExtType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="lax">
+			<xsd:annotation>
+				<xsd:documentation>In addition to the attributes defined, Signal Processing Event may include additional, custom attributes as needed by the application.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:anyAttribute>
+	</xsd:complexType>
+	<!---->
+	<!--Event Schedule Type-->
+	<!---->
+	<xsd:complexType name="EventScheduleType">
+		<xsd:annotation>
+			<xsd:documentation>Event Schedule Type - support insertion of a signal on a repetitive and/or scheduled basis.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines a time range, either absolute or relative.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="StartUTC" type="sig:UTCPointDescriptorType">
+						<xsd:annotation>
+							<xsd:documentation>Specifies the time to start broadcasting the data as a UTC date and time.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="StopUTC" type="sig:UTCPointDescriptorType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Optional time to stop broadcasting the data as a UTC date and time.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="StartOffset" type="xsd:duration">
+						<xsd:annotation>
+							<xsd:documentation>Specifies the time to start broadcasting the data as a duration from the associated/related signal.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="StopOffset" type="xsd:duration" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Optional time to stop broadcasting the data as a duration from the associated/related signal.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:choice>
+			<xsd:element name="Ext" type="core:ExtType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="interval" type="xsd:duration" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Specifies a desired repetition interval for the scheduled signal.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax">
+			<xsd:annotation>
+				<xsd:documentation>An Event Schedule may include additional, custom attributes as
+					needed by the application.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:anyAttribute>
+	</xsd:complexType>
+	<!--                           -->
+	<!-- Signal Processing Notification Type - message to acquisition point to direct processing of signals -->
+	<!--                           -->
+	<xsd:complexType name="SignalProcessingNotificationType">
+		<xsd:annotation>
+			<xsd:documentation> Signal Processing Notification Type - message to acquisition point to direct processing of signals </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ResponseSignal" type="ResponseSignalType" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Container to carry one or more signal processing instructions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ConditioningInfo" type="ConditioningInfoType" minOccurs="0"
+				maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Provide conditioning information. For example, adptive bit rate processing rules.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StatusCode" type="core:StatusCodeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Provides return status information to the caller and is returned for all errors. May optionally be included in a response payload to provide warning or informational details.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Ext" type="core:ExtType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="acquisitionPointIdentity" type="core:NonEmptyStringType">
+			<xsd:annotation>
+				<xsd:documentation> A unique identity of the acquisition point. </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##any" processContents="lax">
+			<xsd:annotation>
+				<xsd:documentation>In addition to the attributes defined, signal processing notification may include additional, custom attributes as needed by the application.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:anyAttribute>
+	</xsd:complexType>
+	<!--                   -->
+	<!-- Response Signal Type - extension of AcquisitionPointInfoType from the signaling schema to support actions to take -->
+	<!--                   -->
+	<xsd:complexType name="ResponseSignalType">
+		<xsd:annotation>
+			<xsd:documentation> Response Signal Type - extension of AcquisitionPointInfoType from the signaling schema to support actions to take </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="sig:AcquisitionPointInfoType">
+				<xsd:sequence>
+					<xsd:element name="EventSchedule" type="EventScheduleType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Optional insertion schedule to support delayed insertion and repetition.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="action" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>create - add a signal 
+replace - replace the existing signal 
+delete - delete the signal 
+noop - do nothing, pass through the signal as is
+private: - support private actions 
+If omitted the default action against an existing signal is a replace. For new signals the default action is create. For existing signals if create is specified, it will insert an additional signal. For new signals delete is invalid and the implementation will perform a create action.</xsd:documentation>
+					</xsd:annotation>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:pattern value="create|replace|delete|noop|private:.+"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,78 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="configBean" class="tv.blackarrow.cpp.model.CppConfigurationBean">
+		<property name="dataCenter" value="place_holder_for_ess_data_center"/>
+		<property name="linearRunTimeID" value="1"/>
+		<property name="nodeID" value="1"/>
+		<property name="poRepoPath" value="/opt/blackarrow/ess/pois_repos"/>
+		<property name="poInProcessDir" value="/opt/blackarrow/ess/pois_repos/inprocess"/>
+		<property name="poProcessedDir" value="/opt/blackarrow/ess/pois_repos/processed"/>
+		<property name="poErrorDir" value="/opt/blackarrow/ess/pois_repos/error"/>
+		<!--  expire all data after 3 days by default (60 * 60 * 24 * 3 = 259200) -->
+		<property name="defaultDataExpirationSeconds" value="259200"/>
+		<!--The below time is needed by our linear POIS to schedule any immediate upstream notification. This setting is currently
+		used by SCTE224 flow also(deprecated). 
+		In SCTE224 case, any start/end upstream notification to transcoders will be sent 5(default value) seconds before their original start/end(Applicable only for encoder level/immediate case). This gives time to the transcoders to act appropriately. 
+		Please note any change in this setting is not recommended. SCTE224 should move to feed level buffer settings eventually.-->
+		<property name="linearPoisProcessingTimeInSeconds" value="5"/>
+		
+		<!-- disabling this for now since TWC will not use this ADS notification functionality, revisit for Comcast -->
+		<property name="linearPoisToAdsNotificationUrl" value="http://localhost:6701/ponotification"/>
+		<!-- property that makes POIS to send non standard custom message for SCC abort requests as requested by TWC. BAS-25832 -->
+		<property name="sendCustomAbortSCCResponse" value="true"/>
+		<property name="linearPoisToExternalAdsNotificationUrl" value=""/>
+		<property name="sccEndPointMonitorUrl" value="http://localhost:6640/scc/signal"/>
+		<property name="mccEndPointMonitorUrl" value="http://localhost:6660/mcc/signal"/>
+		<property name="acsUrl" value="http://localhost:8385/bacs/service/findRestrictions"/>
+		<property name="qamZoneIdentityType" value="ZONE"/>
+		<!-- 
+			Following two settings are used for scheduling out of band SCC notifications across the POIS cluster nodes that the runtime receives 
+			in real-time, when a user creates or updates a blackout event.
+			
+			comma_separated_host_names in the below setting should be replaced with actual host names of all the POIS nodes in the POIS cluster separated by comma.
+		-->
+		<property name="poisClusterHostNames" value="comma_separated_host_names"/>
+		
+		<!-- Hosted App Service URL to which POIS will post messages -->
+		<property name="hostedBlackoutEventStatusUrl" value="http://localhost:8280/altcontentsvc/twc/event/status"/>
+		<property name="defaultHLSInterfaceType" value="CUSTOM"/>
+		<property name="defaultHSSInterfaceType" value="CUSTOM"/>
+		<property name="poisIdentity" value="BA_POIS_ID"/>
+		<property name="poisSystemId" value="BA_POIS_SYS_ID"/>
+		
+		<!-- Couchbase configuration settings start from here. -->
+		<!-- cbHostNames supports comma separates  values for couchbase cluster hostnames -->
+		<property name="cbClusterDataPath" value="/opt/blackarrow/ess/dat"/>
+		<property name="cbHostNames" value="localhost"/>
+		<property name="cbBucketName" value="pois_linear"/>
+		
+		<!-- Note starting from Couchbase version 5.0, buckets can no longer be accessed without an authentication. Please refer to the following link for more details: 
+			 https://forums.couchbase.com/t/v5-0-new-role-based-authentication-bucket-passwords-etc/14637.
+			 For backward compatibility that user name is by default kept as the bucket name but it could be any user that has access to the buckets and needs to be created 
+			 for the application to work for new deployments(may not be for upgrades). -->
+		<property name="cbBucketAccessUserName" value="pois_linear"/>
+		<property name="cbBucketAccessUsersPassword" value=""/>
+		
+		<!--Note the following user is supposed to be a user with Admin rights-->
+		<property name="cbClusterUsername" value="badeploy"/>
+		<property name="cbClusterPassword" value="badeploy123"/>
+		
+		<!-- Couchbase configuration settings ends here. -->
+		
+		<property name="poBreakReconfirmationWindowInMillis" value="3000"/>
+		
+		<!-- CS2-387 Application Level Delta in millis that needs to be added in all ESAM signaling ***"RESPONSE"(SPN/MCCN)**** that we do to transcoders. The idea is to make sure that acting time of SPN/MCCN is never in the past when encoder receives the SPN/MCCN -->
+		<!-- Currently, only PO Abort and SCTE-224 uses this. But this needs to be implemented across ESAM messaging. Doing it for PO and I02 Blackouts are out of scope as of now. If not provided then value would be defaulted to 0.-->
+		<property name="esamResponseUTCTimeDeltaInMillis" value="100"/>
+		
+		<!-- Following property's value is currently used only for Program End Notifications Scheduling. This is a required additional buffer to handle the back to back blackout
+		events case. i.e. where an event is ending and another one starting at the same time on the same feed. This enables ESS to send all the Program Ends first and then
+		Program Starts as that's the way DCMs can handle it. This property takes value in milliseconds. Defaulted to 10 seconds.-->
+		<property name="esamProgramEndNotifyAheadDeltaInMillis" value="10000"/>
+	
+		<property name="serviceEnabled" value="true"/>
+		
+		<!-- Following property's value is applicable only for SCTE-224 feeds. If set to true 'Cadent Content ID' signals will be inserted in SPN, which could be used by Upstream transcoders. By default the value is false.-->
+		<property name="scte224CadentContentIDGenerationEnabled" value="false"/>
+	</bean>	
+</beans>

@@ -1,0 +1,8 @@
+<SignalProcessingEvent xsi:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2 ESAM_Signal.xsd" xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2" xmlns:sig="http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<AcquiredSignal acquisitionPointIdentity="COMEDY_CENTRAL_WEST_AP1" acquisitionSignalID="" acquisitionTime="2013-01-19T04:10:44.013Z" >
+<sig:UTCPoint utcPoint="2013-01-19T04:10:44.013Z"  />
+        <sig:BinaryData signalType="SCTE35">
+         /DAvAAAAAAAA///wFAVAAArzf+//xbpe3/4AKT1sAAEAAAAKAAhDVUVJAAAAAOo6Lgc=
+ </sig:BinaryData>
+</AcquiredSignal>
+</SignalProcessingEvent>

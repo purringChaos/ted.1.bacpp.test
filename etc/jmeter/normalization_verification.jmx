@@ -1,0 +1,1663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="ESS Normalization Verification" enabled="true">
+      <stringProp name="TestPlan.comments">Normalizae SCTE 35 signal</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">qa-us1-app07a.eng.pvt</stringProp>
+          </elementProp>
+          <elementProp name="port" elementType="Argument">
+            <stringProp name="Argument.name">port</stringProp>
+            <stringProp name="Argument.value">6640</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="VMUK / Sky SCTE 35 Normalization" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i01 normalization splice_insert  - 1" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUH4ICJf+/+VNdhiv4AKTLgAAAAAAAKAAhDVUVJB+CAiQAA6WSOcQ==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response signal action" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary type" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal/BinaryData[@signalType=&quot;SCTE35&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal/BinaryData=&quot;/DBCAAAAAAAA///wBQb+VNdhigAsAipDVUVJB+CAiX//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAAfggIk2AACekx3e&quot;</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i01 normalization splice_insert  - 2" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUI8DITf+//dS0Uyf4ADbugAAAAAAAKAAhDVUVJCPAyEwAAeeCxPg==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response signal action" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary type" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal/BinaryData[@signalType=&quot;SCTE35&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal/BinaryData=&quot;/DBCAAAAAAAA///wBQb/dS0UyQAsAipDVUVJCPAyE3//AAANu6AMFkxCVFkAAAAAAAAAAAAAAAAAAAjwMhM2AAAclVAY&quot;</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization splice_insert  - 3" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUq0ZVzf+/+akbR+/4ADbugAAAAAAAKAAhDVUVJKtGVcwAAqLa8uQ==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb+akbR+wAsAipDVUVJKtGVc3//AAANu6AMFkxCVFkAAAAAAAAAAAAAAAAAACrRlXM2AACHcKLh&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization splice_insert  - 4" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUI8DIef+//fmwyCf4AKTLgAAAAAAAKAAhDVUVJCPAyHgAAyNBQOw==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/fmwyCQAsAipDVUVJCPAyHn//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAAjwMh42AAB3UnCD&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization splice_insert  - 5" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUI40OFf+//FGFGKv4AUmXAAAAAAAAKAAhDVUVJCONDhQAAzKqT9w==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/FGFGKgAsAipDVUVJCONDhX//AABSZcAMFkxCVFkAAAAAAAAAAAAAAAAAAAjjQ4U2AAArczUv&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization splice_insert  - 6" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUIt+/+f+//f2NjSf4AKTLgAAAAAAAKAAhDVUVJCLfv/gAAiXqy4w==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/f2NjSQAsAipDVUVJCLfv/n//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAAi37/42AAA6xKSx&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization splice_insert  - 7" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAxAAAAAAAAAP/wFAUI6VuOf+//FQYRqv4AKTLgAAAAAAAKAAhDVUVJCOlbjgAAOlxKgg==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/FQYRqgAsAipDVUVJCOlbjn//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAAjpW442AABfj0xL&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="i03 normalization time_signal - 8" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        		/DBLAAAAAAAA///wBQb+AAAAAAA1AjNDVUVJBfKtRn//AACJVEAJHzQoWXOUVpKDdZAoN1mCR1NpKDV5KDWYI0kjhGI0JSI0AAA3hEUL&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="assertion response binary data" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;noop&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Discovery Channel SCTE 35 Normalization" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery  i01 normalization - splice out - 1" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuDwO1f+//+BLjMH4AKTLgAAAAAAAAQhAh5Q==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/+BLjMAAsAipDVUVJLg8DtX//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAC4PA7U2AAApA+Qv&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery  i01 normalization - splice in - 2" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAgAAAAAAAAAP/wDwUq0ZVzf0/+KH/H9wAAAAAAAEZo2XU=&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;delete&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice out - 3" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuDwO1f+//+BLjMH4AKTLgAAAAAAAAQhAh5Q==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/+BLjMAAsAipDVUVJLg8DtX//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAC4PA7U2AAApA+Qv&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice out - 4" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUt6Lx3f+//+I570H4AKTLgAAAAAAAAlwk3JQ==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/+I570AAsAipDVUVJLei8d3//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAC3ovHc2AAC7Lnuf&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice out - 5" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuA56ef+/+AE2EEH4ADbugAAAAAAAAEIxAdg==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb+AE2EEAAsAipDVUVJLgOenn//AAANu6AMFkxCVFkAAAAAAAAAAAAAAAAAAC4Dnp42AADaudKe&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice out - 6" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuDszbf+/+AFs/sH4AG3dAAAAAAAAAnXcnUw==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb+AFs/sAAsAipDVUVJLg7M23//AAAbd0AMFkxCVFkAAAAAAAAAAAAAAAAAAC4OzNs2AACg12hV&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice in - 7" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        	/DAgAAAAAAAAAP/wDwUuBEzof0//95dKkAAAAAAAACPFe0Y=&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;delete&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice in - 8" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        	/DAgAAAAAAAAAP/wDwUt6flef0//9/dr8AAAAAAAAI6bG8g=&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;delete&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Discovery i03 normalization - splice in - 9" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        	/DAgAAAAAAAAAP/wDwUuDwO1f0//+DwWEAAAAAAAAI8FyAg=&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;delete&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Telnet SCTE 35 Normalization" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i01 normalization - time_signal - 1" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;TELENET_DLAR&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        		/DBLAAAAAAAA///wBQb+AAAAAAA1AjNDVUVJBfKtRn//AACJVEAJHzQoWXOUVpKDdZAoN1mCR1NpKDV5KDWYI0kjhGI0JSI0AAA3hEUL&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and text()=&quot;/DBCAAAAAAAA///wBQb+AAAAAAAsAipDVUVJBfKtRn//AACJVEAMFkxCVFkAAAAAAAAAAAAAAAAAAAXyrUY2AACG+gGp&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i01 normalization - splice_insert - 2" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent &#xd;
+	xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot; &#xd;
+	xmlns=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/conditioning/2&quot; &#xd;
+	xmlns:core=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/core/2&quot; &#xd;
+	xmlns:md=&quot;http://www.cablelabs.com/namespaces/metadata/xsd/signaling/2&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuDwO1f+//+BLjMH4AKTLgAAAAAAAAQhAh5Q==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - action noop" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;noop&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i03 normalization - time_signal - 3" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;TELENET_DLAR&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        		/DBLAAAAAAAA///wBQb+AAAAAAA1AjNDVUVJBfKtRn//AACJVEAJHzQoWXOUVpKDdZAoN1mCR1NpKDV5KDWYI0kjhGI0JSI0AAA3hEUL&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb+AAAAAAAsAipDVUVJBfKtRn//AACJVEAMFkxCVFkAAAAAAAAAAAAAAAAAAAXyrUY2AACG+gGp&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i03 normalization - time_signal - 4" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;TELENET_DLAR&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        		/DBCAAAAAAAA///wBQb/+BLjMAAsAipDVUVJLg8DtX//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAC4PA7U2AAApA+Qv&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;replace&quot;]/BinaryData[@signalType=&quot;SCTE35&quot; and .=&quot;/DBCAAAAAAAA///wBQb/+BLjMAAsAipDVUVJLg8DtX//AAApMuAMFkxCVFkAAAAAAAAAAAAAAAAAAC4PA7U2AAApA+Qv&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i03 normalization - splice_insert - 5" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAlAAAAAAAAAP/wFAUuDwO1f+//+BLjMH4AKTLgAAAAAAAAQhAh5Q==&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - action noop" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;noop&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Telenet i03 normalization - splice_insert - 6" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;esam:SignalProcessingEvent&#xd;
+    xmlns:esam=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1&quot;&#xd;
+    xmlns:core=&quot;urn:cablelabs:md:xsd:core:3.0&quot;&#xd;
+    xmlns:md=&quot;urn:cablelabs:md:xsd:signaling:3.0&quot;&#xd;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+    xsi:schemaLocation=&quot;urn:cablelabs:iptvservices:esam:xsd:signal:1 OC-SP-ESAM-API-I03-Signal.xsd &quot;&gt;&#xd;
+    &lt;esam:AcquiredSignal&#xd;
+        acquisitionPointIdentity=&quot;VMUK_DLARTEST&quot; zoneIdentity=&quot;1&quot;&#xd;
+        acquisitionSignalID=&quot;38359d43-1710-4d5f-a535-a635abf0d04b&quot;&#xd;
+        acquisitionTime=&quot;2020-02-05T18:43:12Z&quot;&gt;&#xd;
+        &lt;md:UTCPoint utcPoint=&quot;2020-02-05T18:43:20.787Z&quot; /&gt;&#xd;
+        &lt;md:BinaryData signalType=&quot;SCTE35&quot;&gt;&#xd;
+        /DAgAAAAAAAAAP/wDwUuDwO1f0//+DwWEAAAAAAAAI8FyAg=&#xd;
+        &lt;/md:BinaryData&gt;&#xd;
+    &lt;/esam:AcquiredSignal&gt;&#xd;
+&lt;/esam:SignalProcessingEvent&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/scc/i03/normalize/v2</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - action noop" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[@action=&quot;noop&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion - no BinaryData" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">/SignalProcessingNotification/ResponseSignal[not(BinaryData)]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">false</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

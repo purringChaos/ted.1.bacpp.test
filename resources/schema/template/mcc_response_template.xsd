@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (http://www.altova.com) by Amit Kumar Sharma (BlackArrow) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="mcc-templates">
+		<xs:annotation>
+			<xs:documentation>Specifies the MCC templates to be used by the BA ESS service for Manifest Confirmation and Conditioning(MCC).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="replacements" type="Replacements" minOccurs="0"/>
+				<xs:element name="hls-template" type="HLSTemplate" minOccurs="0" maxOccurs="10"/>
+				<xs:element name="dash-template" type="DASHTemplate" minOccurs="0" maxOccurs="13"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Replacements">
+		<xs:annotation>
+			<xs:documentation>Specifies a list of replacements to be made in the specified template texts.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="replace" type="Replace" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Replace">
+		<xs:annotation>
+			<xs:documentation>Specifies a key that is expected to be present in the template text, and a value text that should replace that key in the MCC template.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="key" type="xs:string" use="required"/>
+				<xs:attribute name="macro" type="MCCTemplateMacro" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="HLSTemplate">
+		<xs:annotation>
+			<xs:documentation>Specifies template texts that are to be used while responding to a MCC HLS request, that came after ESS SCC phase confirmed or aborted a request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="confirmation-segments" type="Segments"/>
+			<xs:element name="abort-segments" type="Segments"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="type" type="HLSTemplateType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="DASHTemplate">
+		<xs:annotation>
+			<xs:documentation>Specifies template texts that are to be used while responding to a MCC DASH request, that came after ESS SCC phase confirmed or aborted a request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="template-response" type="TemplateResponse"/>
+		</xs:sequence>
+		<xs:attribute name="type" type="DASHTemplateType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="TemplateResponse">
+		<xs:annotation>
+			<xs:documentation>Tag to configure contents for the template resopsne tag for Manifest File.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="templateType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Segments">
+		<xs:annotation>
+			<xs:documentation>Specifies various segments templates that should go in the MCC response.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="first-segment" type="Segment" minOccurs="0"/>
+			<xs:element name="span-segment" type="Segment" minOccurs="0"/>
+			<xs:element name="last-segment" type="Segment" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Segment">
+		<xs:annotation>
+			<xs:documentation>Represents a segment of the Manifest file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tag" type="Tag" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Tag">
+		<xs:annotation>
+			<xs:documentation>Tag to be included in a Segment for Manifest File.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="locality" type="Locality" use="optional"/>
+				<xs:attribute name="adapt" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="Locality">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="before"/>
+			<xs:enumeration value="within"/>
+			<xs:enumeration value="after"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HLSTemplateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PlacementOpportunity"/>
+			<xs:enumeration value="ProgramRunoverUnplanned"/>
+			<xs:enumeration value="BlackoutOverride"/>
+			<xs:enumeration value="SchedulelessInbandPlacementOpportunity"/>
+			<xs:enumeration value="ProgramStart"/>
+			<xs:enumeration value="ProgramEnd"/>
+			<xs:enumeration value="ContentIdentification"/>
+			<xs:enumeration value="NoBlackoutProgramStart"/>
+			<xs:enumeration value="NoBlackoutProgramEnd"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DASHTemplateType">
+		<xs:annotation>
+			<xs:documentation>
+			If Blackout found=========
+			1. Usage ProgramStart template = for 'ProgramStart' Signal. 
+			2. Usage ProgramEnd template = for 'ProgramEnd', 'ProgramEarlyTermination' Signal. 
+			3. Usage ProgramExt template = for 'ProgramRunoverPlanned', 'ProgramRunoverUnplanned' Signal.
+			4. Usage ContentIdentification template = for 'ContentIdentification' Signal.
+			
+			Else for no Blackout case=========
+			1. Usage NoBlackoutProgramStart template = for 'ProgramStart' Signal. 
+			2. Usage NoBlackoutProgramEnd template = for 'ProgramEnd' Signal. 
+			
+
+			5. Usage PlacementOpportunityStart template = for 'PlacementOpportunityStart', 'ProviderAdvertisementStart', 'DistributorAdvertisementStart' Signal.
+			6. Usage PlacementOpportunityEnd template = for 'PlacementOpportunityEnd', 'ProviderAdvertisementEnd', 'DistributorAdvertisementEnd' Signal.
+			7. Usage Default template = for anything other than above.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ProgramStart"/>
+			<xs:enumeration value="ProgramRunoverUnplanned"/>
+			<xs:enumeration value="BlackoutOverride"/>
+			<xs:enumeration value="ProgramEnd"/>
+			<xs:enumeration value="ProgramExt"/>
+			<xs:enumeration value="ContentIdentification"/>
+			<xs:enumeration value="NoBlackoutProgramStart"/>
+			<xs:enumeration value="NoBlackoutProgramEnd"/>
+			<xs:enumeration value="PlacementOpportunityStart"/>
+			<xs:enumeration value="SchedulelessInbandPlacementOpportunityStart"/>
+			<xs:enumeration value="PlacementOpportunityEnd"/>			
+
+			<xs:enumeration value="Default"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MCCTemplateMacro">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\[scte35\.spliceCommandType\]|\[feed\.providerId-feedId\]|\[scte35\.segmentationEventId\]|\[scte35\.segmentationTypeId\]|\[scte35\.webDeliveryAllowedFlag\]|\[scte35\.noRegionalBlackoutFlag\]|\[scte35\.archiveAllowedFlag\]|\[scte35\.deviceRestrictions\]|\[scte35\.deviceRestrictions\]|\[scte35\.segmentationDuration\]|\[scte35\.segmentationUpid\]|\[scte35\.segmentationSignalId\]|\[scte35\.segmentationUpidType\]|\[feed\.feedId\]|\[feed\.providerId\]|\[scte35\.utcPoint\]|\[scte35\.acquisitionPointIdentity\]|\[scte35\.segmentationUpidProgramId\]|\[scte35\.segmentationNum\]|\[scte35\.segmentationCount\]"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
