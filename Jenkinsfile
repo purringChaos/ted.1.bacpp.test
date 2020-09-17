@@ -1,6 +1,6 @@
 #!groovy
 
-node('master') {
+node('slave1') {
 
 		stage("Cleanup Workspace"){ deleteDir() }
 
